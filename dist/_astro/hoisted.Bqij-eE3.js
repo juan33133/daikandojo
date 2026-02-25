@@ -1,0 +1,1 @@
+import"./hoisted.DcSrN2Jb.js";const n=document.getElementById("hero-sliding-layer");if(n){const e=()=>{const t=window.scrollY,l=window.innerHeight,r=Math.min(t/l,1)*(l*2.5);n.style.transform=`translateY(${r}px)`};let o=!1;const s=()=>{o||(window.requestAnimationFrame(()=>{e(),o=!1}),o=!0)};window.addEventListener("scroll",s,{passive:!0}),e()}

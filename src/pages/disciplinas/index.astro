@@ -1,0 +1,11 @@
+---
+import disciplinas from "../../data/disciplinas.json";
+
+// Redirigir a la primera disciplina activa
+const firstDiscipline = disciplinas.find((d) => d.activo !== false);
+if (firstDiscipline) {
+    return Astro.redirect(`/disciplinas/${firstDiscipline.id}`);
+}
+// Si no hay disciplinas activas, redirigir a inicio
+return Astro.redirect("/");
+---

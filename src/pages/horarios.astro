@@ -1,0 +1,412 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Hero from "../components/Hero.astro";
+import horariosData from "../data/horarios.json";
+import disciplinas from "../data/disciplinas.json";
+
+const { clasesDisponibles, categorias, horario_semanal, informacion_gimnasio } =
+  horariosData;
+
+// Crear un Set de disciplinas activas para filtrado rápido
+const disciplinasActivas = new Set(
+  disciplinas.filter((d: any) => d.activo !== false).map((d: any) => d.nombre),
+);
+
+// Mapeo de nombres de actividades a nombres de disciplinas
+const actividadToDisciplina: Record<string, string> = {
+  Aikido: "Aikido Tomiki",
+  "Krav Maga": "Krav Maga",
+  Karate: "Karate Do",
+  "Kick Boxing / Boxeo": "Kick Boxing K1",
+  "Kick Boxing": "Kick Boxing K1",
+  Boxeo: "Boxeo",
+  "Tang Soo Do": "Tang Soo Do",
+  Hapkido: "Hapkido",
+  "Muay Thai": "Muay Thai",
+  Kenjutsu: "Kenjutsu",
+  "Budo Taijutsu": "Budo Taijutsu",
+  "BJJ (Jiu Jitsu)": "Brazilian Jiu Jitsu",
+  Taijiquan: "Taichi (Taijiquan)",
+  Lucha: "Lucha",
+  Qigong: "Qigong",
+};
+
+// Función para verificar si una actividad está activa
+function isActividadActiva(actividad: string): boolean {
+  const disciplinaNombre = actividadToDisciplina[actividad];
+  return disciplinaNombre ? disciplinasActivas.has(disciplinaNombre) : true;
+}
+
+// Mapeo de días
+const diasMap: Record<string, string> = {
+  lunes: "Lun",
+  martes: "Mar",
+  miercoles: "Mié",
+  jueves: "Jue",
+  viernes: "Vie",
+};
+
+const dias = ["Lun", "Mar", "Mié", "Jue", "Vie"];
+
+// Función para obtener categoría por nombre de actividad y grupo
+function getCategoria(actividad: string) {
+  const clase = clasesDisponibles.find((c: any) => c.nombre === actividad);
+  return clase ? categorias[clase.categoria as keyof typeof categorias] : null;
+}
+
+// Convertir horario a formato de tabla
+interface ClaseHorario {
+  actividad: string;
+  grupo: string;
+  inicio: string;
+  fin: string;
+}
+
+// Agrupar clases por franja horaria para cada día
+function getClasesPorFranja(dia: string): Record<string, ClaseHorario[]> {
+  const diaKey = Object.keys(diasMap).find((k) => diasMap[k] === dia) || "";
+  const clases = horario_semanal[diaKey as keyof typeof horario_semanal] || [];
+
+  const franjas: Record<string, ClaseHorario[]> = {};
+  clases.forEach((clase: any) => {
+    // Filtrar solo las actividades activas
+    if (!isActividadActiva(clase.actividad)) return;
+
+    const key = `${clase.inicio}-${clase.fin}`;
+    if (!franjas[key]) franjas[key] = [];
+    franjas[key].push(clase);
+  });
+
+  return franjas;
+}
+
+// Obtener todas las franjas horarias únicas ordenadas
+function getAllFranjas(): string[] {
+  const todasLasFranjas = new Set<string>();
+
+  Object.values(horario_semanal).forEach((clases: any) => {
+    clases.forEach((clase: any) => {
+      if (clase.inicio && clase.fin) {
+        todasLasFranjas.add(`${clase.inicio}-${clase.fin}`);
+      }
+    });
+  });
+
+  return Array.from(todasLasFranjas).sort((a, b) => {
+    const horaA = parseInt(a.split(":")[0]);
+    const horaB = parseInt(b.split(":")[0]);
+    return horaA - horaB;
+  });
+}
+
+const todasLasFranjas = getAllFranjas();
+const franjasMañana = todasLasFranjas.filter(
+  (f) => parseInt(f.split(":")[0]) < 14,
+);
+const franjasTarde = todasLasFranjas.filter(
+  (f) => parseInt(f.split(":")[0]) >= 14,
+);
+---
+
+<BaseLayout
+  title="Horarios"
+  description="Horarios de clases en Daikan Dojo Málaga."
+>
+  <Header slot="header" currentPath="/horarios" />
+
+  <section
+    class="section"
+    style="padding-top: calc(var(--header-height) + var(--space-8));"
+  >
+    <div class="container">
+      <!-- Leyenda -->
+      <div class="legend">
+        {
+          Object.entries(categorias).map(([key, cat]) => (
+            <span class="legend__item">
+              <i style={`background:${(cat as any).color}`} />
+              {(cat as any).nombre}
+            </span>
+          ))
+        }
+      </div>
+
+      <!-- MAÑANA -->
+      <h3 class="time-label">🌅 Mañana</h3>
+      <div class="table-wrap">
+        <table class="schedule">
+          <thead>
+            <tr><th>Hora</th>{dias.map((d) => <th>{d}</th>)}</tr>
+          </thead>
+          <tbody>
+            {
+              franjasMañana.map((franja) => (
+                <tr>
+                  <td class="time">{franja}</td>
+                  {dias.map((dia) => {
+                    const clasesPorFranja = getClasesPorFranja(dia);
+                    const clases = clasesPorFranja[franja] || [];
+                    if (clases.length > 0) {
+                      return (
+                        <td class="cell-container">
+                          {clases.map((clase: ClaseHorario) => {
+                            const cat = getCategoria(clase.actividad);
+                            return (
+                              <div
+                                class="cell"
+                                data-discipline={clase.actividad}
+                                style={
+                                  cat
+                                    ? `background:${cat.bg};border-left:3px solid ${cat.color}`
+                                    : ""
+                                }
+                              >
+                                <b>{clase.actividad}</b>
+                                <small>{clase.grupo}</small>
+                              </div>
+                            );
+                          })}
+                        </td>
+                      );
+                    }
+                    return <td class="empty" />;
+                  })}
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- TARDE -->
+      <h3 class="time-label">🌆 Tarde</h3>
+      <div class="table-wrap">
+        <table class="schedule">
+          <thead>
+            <tr><th>Hora</th>{dias.map((d) => <th>{d}</th>)}</tr>
+          </thead>
+          <tbody>
+            {
+              franjasTarde.map((franja) => (
+                <tr>
+                  <td class="time">{franja}</td>
+                  {dias.map((dia) => {
+                    const clasesPorFranja = getClasesPorFranja(dia);
+                    const clases = clasesPorFranja[franja] || [];
+                    if (clases.length > 0) {
+                      return (
+                        <td class="cell-container">
+                          {clases.map((clase: ClaseHorario) => {
+                            const cat = getCategoria(clase.actividad);
+                            return (
+                              <div
+                                class="cell"
+                                data-discipline={clase.actividad}
+                                style={
+                                  cat
+                                    ? `background:${cat.bg};border-left:3px solid ${cat.color}`
+                                    : ""
+                                }
+                              >
+                                <b>{clase.actividad}</b>
+                                <small>{clase.grupo}</small>
+                              </div>
+                            );
+                          })}
+                        </td>
+                      );
+                    }
+                    return <td class="empty" />;
+                  })}
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Información de contacto -->
+      <div class="contact-info">
+        <p>
+          📞 Para más información: <a
+            href={`tel:+34${informacion_gimnasio.telefono}`}
+            >+34 {informacion_gimnasio.telefono.slice(0, 3)}
+            {informacion_gimnasio.telefono.slice(3, 6)}
+            {informacion_gimnasio.telefono.slice(6, 9)}</a
+          >
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  .legend {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0.5rem 0.75rem;
+    background: var(--color-bg-card);
+    border-radius: var(--radius-md);
+    margin-bottom: 1rem;
+  }
+  .legend__item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+  .legend__item i {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+  }
+  .time-label {
+    margin: 0.75rem 0 0.5rem;
+    font-size: 0.9rem;
+    color: var(--color-accent);
+  }
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 0.5rem;
+  }
+  .schedule {
+    width: 100%;
+    min-width: 500px;
+    border-collapse: collapse;
+  }
+  .schedule th,
+  .schedule td {
+    padding: 0.3rem 0.4rem;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.7rem;
+  }
+  .schedule th {
+    background: var(--color-secondary);
+    text-transform: uppercase;
+    font-size: 0.6rem;
+    letter-spacing: 0.03em;
+  }
+  .time {
+    font-weight: 600;
+    color: var(--color-accent);
+    white-space: nowrap;
+    background: var(--color-bg-alt);
+    font-size: 0.65rem;
+  }
+  .cell-container {
+    padding: 0 !important;
+    vertical-align: top;
+  }
+  .cell {
+    padding: 0.25rem !important;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    margin: 2px;
+  }
+  .cell b {
+    display: block;
+    font-size: 0.65rem;
+    color: var(--color-text);
+    line-height: 1.2;
+  }
+  .cell small {
+    font-size: 0.55rem;
+    color: var(--color-text-muted);
+  }
+  .cell.is-highlighted {
+    box-shadow: inset 0 0 0 2px rgba(212, 175, 55, 0.9);
+    z-index: 10;
+    position: relative;
+  }
+  .cell.is-dimmed {
+    opacity: 0.3;
+  }
+  .empty {
+    background: var(--color-bg);
+  }
+  .contact-info {
+    margin-top: 1.5rem;
+    text-align: center;
+    padding: 1rem;
+    background: var(--color-bg-card);
+    border-radius: var(--radius-md);
+  }
+  .contact-info a {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+  @media (max-width: 768px) {
+    .legend {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>
+
+<script>
+  const cells = document.querySelectorAll(".cell[data-discipline]");
+  let activeDisc: string | null = null;
+
+  // Mapa de disciplinas relacionadas
+  const relacionadas: Record<string, string[]> = {
+    "Kick Boxing / Boxeo": ["Boxeo", "Kick Boxing"],
+    Boxeo: ["Kick Boxing / Boxeo"],
+    "Kick Boxing": ["Kick Boxing / Boxeo"],
+  };
+
+  // Función para obtener todas las disciplinas relacionadas
+  function getRelacionadas(disc: string): string[] {
+    const related = relacionadas[disc] || [];
+    return [disc, ...related];
+  }
+
+  function highlight(disc: string | null) {
+    cells.forEach((cell) => {
+      const el = cell as HTMLElement;
+      const cellDisc = el.dataset.discipline || "";
+
+      if (disc === null) {
+        el.classList.remove("is-highlighted", "is-dimmed");
+      } else {
+        const disciplinasAResaltar = getRelacionadas(disc);
+        if (disciplinasAResaltar.includes(cellDisc)) {
+          el.classList.add("is-highlighted");
+          el.classList.remove("is-dimmed");
+        } else {
+          el.classList.add("is-dimmed");
+          el.classList.remove("is-highlighted");
+        }
+      }
+    });
+  }
+
+  cells.forEach((cell) => {
+    cell.addEventListener("mouseenter", () => {
+      if (!activeDisc)
+        highlight((cell as HTMLElement).dataset.discipline || null);
+    });
+    cell.addEventListener("mouseleave", () => {
+      if (!activeDisc) highlight(null);
+    });
+    cell.addEventListener("click", () => {
+      const disc = (cell as HTMLElement).dataset.discipline || null;
+      if (activeDisc === disc) {
+        activeDisc = null;
+        highlight(null);
+      } else {
+        activeDisc = disc;
+        highlight(disc);
+      }
+    });
+  });
+</script>

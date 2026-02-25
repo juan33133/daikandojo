@@ -1,0 +1,345 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Hero from "../components/Hero.astro";
+---
+
+<BaseLayout
+  title="Contacto"
+  description="Contacta con Daikan Dojo. Estamos en Camino de los Guindos 22, Málaga. Email: daikandojo@gmail.com"
+>
+  <Header slot="header" currentPath="/contacto" />
+
+  <section class="section">
+    <div class="container">
+      <div class="contact-grid">
+        <!-- Formulario -->
+        <div class="contact-form-wrapper">
+          <h2>Envíanos un mensaje</h2>
+          <p class="contact-form-text">
+            Completa el formulario y te responderemos lo antes posible.
+          </p>
+
+          <form class="contact-form" id="contact-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="nombre">Nombre *</label>
+                <input
+                  type="text"
+                  id="nombre"
+                  name="nombre"
+                  class="form-input"
+                  required
+                  placeholder="Tu nombre"
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="telefono">Teléfono</label>
+                <input
+                  type="tel"
+                  id="telefono"
+                  name="telefono"
+                  class="form-input"
+                  placeholder="661 313 739"
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="email">Email *</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-input"
+                required
+                placeholder="tu@email.com"
+              />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="asunto">Asunto</label>
+              <select id="asunto" name="asunto" class="form-input">
+                <option value="">Selecciona un asunto</option>
+                <option value="inscripcion"
+                  >Información sobre inscripción</option
+                >
+                <option value="horarios">Consulta de horarios</option>
+                <option value="prueba">Solicitar clase de prueba</option>
+                <option value="otro">Otro</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="mensaje">Mensaje *</label>
+              <textarea
+                id="mensaje"
+                name="mensaje"
+                class="form-textarea"
+                required
+                placeholder="Escribe tu mensaje aquí..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn--primary btn--large">
+              Enviar mensaje
+            </button>
+          </form>
+        </div>
+
+        <!-- Info de contacto -->
+        <div class="contact-info">
+          <div class="contact-info-card">
+            <h3>Información de contacto</h3>
+
+            <div class="contact-item">
+              <div class="contact-item__icon">📍</div>
+              <div>
+                <strong>Dirección</strong>
+                <p>Camino de los Guindos, 22<br />29004 Málaga, España</p>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-item__icon">📧</div>
+              <div>
+                <strong>Email</strong>
+                <p>
+                  <a href="mailto:daikandojo@gmail.com">daikandojo@gmail.com</a>
+                </p>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-item__icon">📞</div>
+              <div>
+                <strong>Teléfono</strong>
+                <p><a href="tel:+34661313739">+34 661 313 739</a></p>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-item__icon">🕐</div>
+              <div>
+                <strong>Horario de atención</strong>
+                <p>
+                  Lunes a Viernes: 17:00 - 22:00<br />Sábados: 10:00 - 14:00
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mapa placeholder -->
+          <div class="map-placeholder">
+            <div class="map-placeholder__content">
+              <span>📍</span>
+              <p>Camino de los Guindos, 22</p>
+              <a
+                href="https://maps.google.com/?q=Camino+de+los+Guindos+22+Malaga"
+                target="_blank"
+                rel="noopener"
+                class="btn btn--secondary"
+              >
+                Ver en Google Maps
+              </a>
+            </div>
+          </div>
+
+          <!-- WhatsApp -->
+          <a
+            href="https://wa.me/34661313739"
+            class="whatsapp-btn"
+            target="_blank"
+            rel="noopener"
+          >
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"
+              ><path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+              ></path></svg
+            >
+            ¡Escríbenos por WhatsApp!
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: var(--space-12);
+    align-items: start;
+  }
+
+  .contact-form-wrapper h2 {
+    font-size: var(--font-size-2xl);
+    margin-top: var(--space-8);
+    margin-bottom: var(--space-2);
+  }
+
+  .contact-form-text {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-6);
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+  }
+
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .contact-info-card {
+    background: var(--color-bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+  }
+
+  .contact-info-card h3 {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .contact-item {
+    display: flex;
+    gap: var(--space-4);
+    margin-bottom: var(--space-5);
+  }
+
+  .contact-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .contact-item__icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .contact-item strong {
+    display: block;
+    color: var(--color-text);
+    margin-bottom: var(--space-1);
+  }
+
+  .contact-item p {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: var(--line-height-relaxed);
+  }
+
+  .map-placeholder {
+    background: var(--gradient-hero);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    aspect-ratio: 16/10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .map-placeholder__content {
+    text-align: center;
+  }
+
+  .map-placeholder__content span {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: var(--space-2);
+  }
+
+  .map-placeholder__content p {
+    margin-bottom: var(--space-4);
+    color: var(--color-text-muted);
+  }
+
+  .whatsapp-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    background: #25d366;
+    color: white;
+    font-weight: var(--font-weight-semibold);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-fast);
+  }
+
+  .whatsapp-btn:hover {
+    background: #128c7e;
+    transform: translateY(-2px);
+    color: white;
+  }
+
+  @media (max-width: 1024px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script
+  is:inline
+  src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
+></script>
+<script is:inline>
+  (function () {
+    emailjs.init("lgl6iaCUuSLhMffR9");
+  })();
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("contact-form");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = "Enviando...";
+      submitBtn.disabled = true;
+
+      const templateParams = {
+        from_name: document.getElementById("nombre").value,
+        from_email: document.getElementById("email").value,
+        phone: document.getElementById("telefono").value || "No proporcionado",
+        subject: document.getElementById("asunto").value || "Sin asunto",
+        message: document.getElementById("mensaje").value,
+      };
+
+      emailjs
+        .send("service_13n8nh7", "template_58a3k99", templateParams)
+        .then(function (response) {
+          alert(
+            "¡Mensaje enviado correctamente! Te responderemos lo antes posible.",
+          );
+          form.reset();
+        })
+        .catch(function (error) {
+          console.error("Error:", error);
+          alert(
+            "Hubo un error al enviar el mensaje. Por favor, inténtalo de nuevo o contáctanos directamente por teléfono.",
+          );
+        })
+        .finally(function () {
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+        });
+    });
+  });
+</script>

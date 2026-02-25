@@ -1,0 +1,314 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Hero from "../components/Hero.astro";
+---
+
+<BaseLayout
+  title="Asociación Daikan"
+  description="Historia y filosofía de Daikan Dojo, escuela de artes marciales en Málaga."
+>
+  <Header slot="header" currentPath="/asociacion" transparent={true} />
+
+  <!-- Hero con imagen de fondo -->
+  <section class="family-hero">
+    <div class="family-hero__overlay"></div>
+    <div class="container">
+      <div class="family-hero__content">
+        <h1><span>Asociación</span> Daikan</h1>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-content">
+          <h2>El Significado de Daikan</h2>
+          <div class="divider"></div>
+          <p>
+            <strong>"DAIKAN" (大館)</strong> significa "Gran Edificio o espacio" aplicado
+            sobre todo a elementos sagrados, y <strong>"DOJO" (道場)</strong> es el
+            lugar donde tradicionalmente se reunían los samuráis para sus entrenamientos.
+          </p>
+          <p>
+            La idea de la Asociación Centro Deportivo Daikan Dojo surge por el
+            amor a las artes marciales y disciplinas orientales por parte de los
+            socios fundadores. Teníamos la ilusión de ver crecer a nuestros
+            hijos en el entorno de disciplina y respeto propio de las artes
+            marciales.
+          </p>
+        </div>
+        <div class="about-kanji">
+          <span>大館道場</span>
+          <p>Daikan Dojo</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container">
+      <div class="quote-section">
+        <blockquote>
+          «La historia de Daikan Dojo podría ser el argumento perfecto de una
+          película. Pierdes tu trabajo y, en lugar de hundirte, decides darle la
+          vuelta a la tortilla e interpretar dicha circunstancia como una
+          oportunidad que la vida te ha puesto en bandeja para hacer tus sueños
+          realidad.»
+        </blockquote>
+        <cite>— Francisco Daniel Medina, Staf Magazine</cite>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header section-header--center">
+        <span class="section-header__subtitle">Lo que nos define</span>
+        <h2 class="section-header__title">Nuestros Valores</h2>
+        <div class="divider divider--center"></div>
+      </div>
+
+      <div class="grid grid--3">
+        <div class="value-card">
+          <span class="value-icon">🎯</span>
+          <h3>Disciplina</h3>
+          <p>
+            La constancia y el esfuerzo son la base del progreso en las artes
+            marciales.
+          </p>
+        </div>
+        <div class="value-card">
+          <span class="value-icon">🤝</span>
+          <h3>Respeto</h3>
+          <p>Respeto hacia los compañeros, instructores y hacia uno mismo.</p>
+        </div>
+        <div class="value-card">
+          <span class="value-icon">👨‍👩‍👧‍👦</span>
+          <h3>Asociación</h3>
+          <p>Más que un gimnasio, somos una comunidad que crece junta.</p>
+        </div>
+        <div class="value-card">
+          <span class="value-icon">📚</span>
+          <h3>Tradición</h3>
+          <p>Honramos las enseñanzas ancestrales de las artes marciales.</p>
+        </div>
+        <div class="value-card">
+          <span class="value-icon">🌱</span>
+          <h3>Crecimiento</h3>
+          <p>Desarrollo integral: físico, mental y espiritual.</p>
+        </div>
+        <div class="value-card">
+          <span class="value-icon">⭐</span>
+          <h3>Excelencia</h3>
+          <p>Buscamos la mejora continua en todo lo que hacemos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: var(--space-12);
+    align-items: center;
+  }
+  .about-content h2 {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--space-4);
+  }
+  .about-content p {
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-relaxed);
+    margin-bottom: var(--space-4);
+  }
+  .about-kanji {
+    text-align: center;
+    padding: var(--space-10);
+    background: var(--gradient-hero);
+    border: 2px solid var(--color-primary);
+    border-radius: var(--radius-xl);
+  }
+  .about-kanji span {
+    font-size: 4rem;
+    color: var(--color-primary);
+    display: block;
+    margin-bottom: var(--space-4);
+  }
+  .about-kanji p {
+    font-family: var(--font-family-heading);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+  }
+  .quote-section {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .quote-section blockquote {
+    font-size: var(--font-size-xl);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text);
+    font-style: italic;
+    margin-bottom: var(--space-4);
+  }
+  .quote-section cite {
+    color: var(--color-accent);
+    font-weight: var(--font-weight-medium);
+  }
+  .value-card {
+    text-align: center;
+    padding: var(--space-6);
+    background: var(--color-bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all var(--transition-base);
+  }
+  .value-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--color-primary);
+  }
+  .value-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: var(--space-3);
+  }
+  .value-card h3 {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-2);
+  }
+  .value-card p {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+  .facility-card {
+    text-align: center;
+    padding: var(--space-6);
+    background: var(--color-bg-card);
+    border-radius: var(--radius-lg);
+  }
+  .facility-card span {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: var(--space-2);
+  }
+  .facility-card h4 {
+    margin-bottom: var(--space-1);
+  }
+  .facility-card p {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+  .cta-section {
+    padding: var(--space-16) 0;
+    background: var(--gradient-accent);
+  }
+  .cta-section h2 {
+    color: var(--color-text-dark);
+    margin-bottom: var(--space-3);
+  }
+  .cta-section p {
+    color: rgba(26, 26, 26, 0.8);
+    margin-bottom: var(--space-6);
+    max-width: none;
+  }
+  .cta-section .btn--primary {
+    background: var(--color-secondary);
+    color: var(--color-text);
+  }
+  @media (max-width: 1024px) {
+    .about-grid {
+      grid-template-columns: 1fr;
+    }
+    .about-kanji {
+      order: -1;
+    }
+  }
+
+  /* Family Hero (Compact & Transparent Header) */
+  .family-hero {
+    position: relative;
+    /* Ocupar toda la altura de la pantalla */
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    background: url("/images/recursos/familia_daikan.png") no-repeat center 25%;
+    background-size: cover;
+    /* Padding superior para alinear texto, padding inferior normal */
+    padding: calc(var(--header-height) + var(--space-8)) 0 var(--space-12);
+    margin-top: 0;
+    /* Efecto parallax: la imagen se queda fija mientras el contenido scrollea */
+    background-attachment: fixed;
+    /* Importante para que el parallax funcione suave y la imagen cubra todo */
+    background-position: center 20%;
+    overflow: hidden;
+  }
+
+  .family-hero__overlay {
+    position: absolute;
+    inset: 0;
+    /* Overlay ligera para balancear visibilidad de imagen y texto */
+    background: linear-gradient(
+      to bottom,
+      rgba(15, 15, 15, 0.5) 0%,
+      rgba(15, 15, 15, 0.2) 50%,
+      rgba(15, 15, 15, 0.8) 100%
+    );
+    z-index: 1;
+  }
+
+  .family-hero .container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+  }
+
+  .family-hero__content {
+    max-width: 800px;
+    text-align: left;
+  }
+
+  .family-hero__subtitle {
+    display: inline-block;
+    padding: var(--space-1) var(--space-3);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(4px);
+    border-radius: var(--radius-full);
+    margin-bottom: var(--space-2);
+    font-weight: var(--font-weight-medium);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-transform: uppercase;
+    font-size: var(--font-size-xs);
+    letter-spacing: 0.05em;
+    color: var(--color-text); /* Blanco por defecto */
+  }
+
+  .family-hero h1 {
+    font-size: var(--font-size-4xl);
+    line-height: 1.1;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    margin-bottom: var(--space-3);
+  }
+
+  .family-hero h1 span {
+    color: var(--color-accent); /* Dorado para "Asociación" */
+  }
+
+  @media (max-width: 768px) {
+    .family-hero {
+      padding-top: calc(70px + var(--space-8));
+    }
+
+    .family-hero h1 {
+      font-size: var(--font-size-3xl);
+    }
+  }
+</style>

@@ -1,0 +1,293 @@
+---
+interface Props {
+  title: string;
+  ctaText?: string;
+  ctaLink?: string;
+  ctaSecondaryText?: string;
+  ctaSecondaryLink?: string;
+  backgroundImage?: string;
+  baseSvg?: string;
+  slidingSvg?: string;
+  baseSvgMobile?: string;
+  slidingSvgMobile?: string;
+  size?: "default" | "large" | "small" | "compact" | "fullscreen";
+}
+
+const {
+  title,
+  ctaText,
+  ctaLink = "/contacto",
+  ctaSecondaryText,
+  ctaSecondaryLink,
+  backgroundImage,
+  baseSvg = "/images/recursos/fondoCirculoRojoAlto.svg",
+  slidingSvg = "/images/recursos/paredDojo.svg",
+  baseSvgMobile,
+  slidingSvgMobile,
+  size = "default",
+} = Astro.props;
+---
+
+<section
+  class:list={["hero", `hero--${size}`]}
+  style={[
+    backgroundImage ? `--bg-image: url(${backgroundImage})` : "",
+    `--base-svg: url(${baseSvg})`,
+    `--sliding-svg: url(${slidingSvg})`,
+    baseSvgMobile ? `--base-svg-mobile: url(${baseSvgMobile})` : "",
+    slidingSvgMobile ? `--sliding-svg-mobile: url(${slidingSvgMobile})` : "",
+  ]
+    .filter(Boolean)
+    .join(";")}
+>
+  <div class="hero__layer-base"></div>
+
+  <div class="hero__layer-sliding" id="hero-sliding-layer"></div>
+
+  <div class="hero__layer-light">
+    <div class="hero__light-orb"></div>
+  </div>
+
+  <div class="hero__overlay"></div>
+
+  <div class="container hero__container">
+    <div class="hero__content">
+      <h1 class="hero__title">
+        <Fragment set:html={title} />
+      </h1>
+
+      {
+        (ctaText || ctaSecondaryText) && (
+          <div class="hero__actions">
+            {ctaText && (
+              <a href={ctaLink} class="btn btn--primary btn--large">
+                {ctaText}
+              </a>
+            )}
+            {ctaSecondaryText && (
+              <a href={ctaSecondaryLink} class="btn btn--secondary btn--large">
+                {ctaSecondaryText}
+              </a>
+            )}
+          </div>
+        )
+      }
+    </div>
+
+    <slot />
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: top;
+    padding: var(--space-24) 0 var(--space-16);
+    background: var(--gradient-hero);
+    overflow: hidden;
+  }
+
+  /* --- LAYER 1: FONDO BASE FIJO --- */
+  .hero__layer-base {
+    position: absolute;
+    inset: 0;
+    background-image: var(--base-svg);
+    background-size: cover;
+    background-position: top;
+    background-attachment: fixed;
+    z-index: 1;
+  }
+
+  /* --- LAYER 1 MOBILE: usar fondo móvil si existe --- */
+  @media (max-width: 768px) {
+    .hero__layer-base {
+      background-image: var(--base-svg-mobile, var(--base-svg));
+      background-attachment: scroll; /* Mejor rendimiento en móvil */
+    }
+  }
+
+  /* --- LAYER 2: FONDO DESLIZANTE (controlado por scroll) --- */
+  .hero__layer-sliding {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 125vh;
+    background-image: var(--sliding-svg);
+    background-size: cover;
+    background-position: top;
+    background-repeat: no-repeat;
+    margin-top: -25vh;
+    z-index: 2;
+    opacity: 1;
+    will-change: transform;
+  }
+
+  /* --- LAYER 2 MOBILE: usar pared móvil si existe --- */
+  @media (max-width: 768px) {
+    .hero__layer-sliding {
+      background-image: var(--sliding-svg-mobile, var(--sliding-svg));
+    }
+  }
+
+  .hero--large {
+    min-height: 90vh;
+  }
+  .hero--fullscreen {
+    min-height: 140vh;
+    margin-top: 0;
+    padding-top: calc(var(--header-height) + var(--space-16));
+  }
+  .hero--small {
+    min-height: 40vh;
+    padding: var(--space-16) 0;
+  }
+  .hero--compact {
+    min-height: auto;
+    padding: var(--space-10) 0 var(--space-8);
+  }
+
+  .hero--compact .hero__title {
+    font-size: var(--font-size-4xl);
+  }
+
+  .hero__overlay {
+    position: absolute;
+    inset: 0;
+    background-image: var(--bg-image);
+    background-size: cover;
+    background-position: center;
+    opacity: 1;
+    z-index: 4;
+    mix-blend-mode: overlay;
+  }
+
+  .hero__container {
+    position: relative;
+    z-index: 10;
+  }
+
+  .hero__content {
+    max-width: 800px;
+  }
+
+  .hero__title {
+    font-family: "Black Ops One", var(--font-family-heading);
+    font-size: var(--font-size-6xl);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.1;
+    margin-bottom: var(--space-8);
+    animation: fadeInUp 0.6s ease 0.1s forwards;
+    opacity: 0;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
+  }
+
+  .hero__title :global(span) {
+    color: var(--color-accent);
+  }
+
+  .hero__actions {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    animation: fadeInUp 0.6s ease 0.3s forwards;
+    opacity: 0;
+  }
+
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      height: 100vh;
+      padding: var(--space-16) 0 var(--space-12);
+    }
+    .hero--large {
+      min-height: 80vh;
+    }
+
+    /* En móvil, ajustar alturas de las capas */
+    .hero__layer-base {
+      min-height: 100vh;
+    }
+
+    .hero__layer-sliding {
+      min-height: 150vh;
+      top: auto;
+      bottom: 30vh;
+      margin-top: 0;
+      background-position: bottom;
+    }
+
+    .hero__title {
+      font-size: var(--font-size-3xl);
+      text-align: center;
+      letter-spacing: 0.08em;
+    }
+
+    .hero__content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding-top: 25vh;
+    }
+
+    .hero__actions {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero__actions .btn {
+      width: 100%;
+      text-align: center;
+    }
+  }
+</style>
+
+<script>
+  // Efecto parallax controlado por scroll
+  const slidingLayer = document.getElementById("hero-sliding-layer");
+
+  if (slidingLayer) {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const heroHeight = window.innerHeight;
+
+      // Calcular el desplazamiento basado en el scroll
+      // La imagen se mueve hacia abajo (parte inferior de la pantalla)
+      const maxScroll = heroHeight;
+      const scrollProgress = Math.min(scrollY / maxScroll, 1);
+      const translateY = scrollProgress * (heroHeight * 2.5); // Aumentado de 2.5 a 2.8 para mayor velocidad
+
+      slidingLayer.style.transform = `translateY(${translateY}px)`;
+    };
+
+    // Usar requestAnimationFrame para mejor rendimiento
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    handleScroll(); // Llamar una vez al cargar
+  }
+</script>

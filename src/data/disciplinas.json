@@ -1,0 +1,107 @@
+[
+    {
+        "id": "karate-do",
+        "nombre": "Karate Do",
+        "descripcion": "Arte marcial de Okinawa que desarrolla técnicas de golpeo, bloqueo y patadas. Fortalece el cuerpo y la disciplina mental.",
+        "color": "#f39c12",
+        "activo": true,
+        "index": 1
+    },
+    {
+        "id": "brazilian-jiu-jitsu",
+        "nombre": "Brazilian Jiu Jitsu",
+        "descripcion": "Arte marcial enfocado en la lucha en el suelo y técnicas de sumisión. Ideal para defensa personal sin importar el tamaño del practicante.",
+        "color": "#9b59b6",
+        "imagen": "/images/disciplinas/bjjTournament.jpeg",
+        "activo": true,
+        "index": 2
+    },
+    {
+        "id": "boxeo",
+        "nombre": "Boxeo",
+        "color": "#c0392b",
+        "activo": true,
+        "imagen": "/images/disciplinas/boxeo.jpeg",
+        "index": 3
+    },
+    {
+        "id": "kick-boxing-k1",
+        "nombre": "Kick Boxing K1",
+        "descripcion": "Deporte de combate que combina técnicas de boxeo con patadas. Excelente para el acondicionamiento físico y la defensa.",
+        "color": "#e67e22",
+        "activo": true,
+        "imagen": "/images/disciplinas/kickboxing.jpeg",
+        "index": 4
+    },
+    {
+        "id": "muay-thai",
+        "nombre": "Muay Thai",
+        "descripcion": "El arte de los ocho miembros: puños, codos, rodillas y piernas. Deporte nacional de Tailandia con técnicas devastadoras.",
+        "color": "#d35400",
+        "imagen": "/images/disciplinas/muay-thai.jpeg",
+        "activo": true,
+        "index": 5
+    },
+    {
+        "id": "krav-maga",
+        "nombre": "Krav Maga",
+        "descripcion": "Sistema de defensa personal israelí diseñadopara situaciones reales. Técnicas prácticas y efectivas para cualquier persona.",
+        "color": "#c0392b",
+        "activo": true,
+        "imagen": "/images/disciplinas/kravmaga.png",
+        "index": 6
+    },
+    {
+        "id": "lucha",
+        "nombre": "Lucha",
+        "descripcion": "Disciplina de combate cuerpo a cuerpo enfocada en derribos, controles y técnicas de suelo. Base fundamental para las artes marciales mixtas.",
+        "color": "#34495e",
+        "activo": true,
+        "imagen": "/images/disciplinas/lucha.jpeg",
+        "index": 8
+    },
+    {
+        "id": "aikido-tomiki",
+        "nombre": "Aikido Tomiki",
+        "descripcion": "El Aikido Tomiki combina las técnicas tradicionales del Aikido con un sistema de entrenamiento competitivo, desarrollando la defensa personal y el equilibrio mental.",
+        "color": "#3498db",
+        "activo": true,
+        "imagen": "/images/disciplinas/Aikido.jpeg",
+        "index": 9
+    },
+    {
+        "id": "hapkido",
+        "nombre": "Hapkido",
+        "descripcion": "Arte marcial coreano que combina golpes, patadas, proyecciones y luxaciones. Excelente para la defensa personal integral.",
+        "color": "#e74c3c",
+        "imagen": "/images/disciplinas/hapkido.jpeg",
+        "activo": true,
+        "index": 10
+    },
+    {
+        "id": "bujinkan",
+        "nombre": "Budo Taijutsu | DPP",
+        "descripcion": "Sistema de artes marciales tradicionales japonesas que engloba técnicas de combate de los antiguos guerreros ninja y samurai.",
+        "color": "#2c3e50",
+        "activo": true,
+        "imagen": "/images/disciplinas/defensaPolicialBudo.jpeg",
+        "index": 11
+    },
+    {
+        "id": "kenjutsu",
+        "nombre": "Kenjutsu",
+        "descripcion": "Arte marcial japonés del manejo de la espada. Entrenamiento tradicional con técnicas de los antiguos samuráis.",
+        "color": "#8e44ad",
+        "activo": true,
+        "imagen": "/images/disciplinas/Kenjutsu.jpeg",
+        "index": 12
+    },
+    {
+        "id": "tang-soo-do",
+        "nombre": "Tang Soo Do",
+        "descripcion": "Arte marcial coreano tradicional que combina técnicas de mano y pie con filosofía oriental. Desarrollo integral del practicante.",
+        "color": "#34495e",
+        "activo": true,
+        "index": 14
+    }
+]

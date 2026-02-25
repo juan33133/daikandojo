@@ -1,0 +1,132 @@
+---
+interface Props {
+  id: string;
+  nombre: string;
+  imagen?: string;
+  descripcion?: string;
+  color?: string;
+}
+
+const { id, nombre, imagen, descripcion, color = "#c41e3a" } = Astro.props;
+---
+
+<a
+  href={`/disciplinas/${id}`}
+  class="discipline-card"
+  style={`--card-color: ${color}; ${imagen ? `background-image: url('${imagen}');` : "background: linear-gradient(135deg, #2a2a2a 0%, #111111 100%);"}`}
+>
+  <span class="discipline-card__link">
+    <h3 class="discipline-card__title">{nombre}</h3>
+  </span>
+</a>
+
+<style>
+  .discipline-card {
+    display: flex;
+    min-width: 100%;
+    min-height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-6);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    transition: all var(--transition-base);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .discipline-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--card-color);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition-base);
+    z-index: 2; /* Encima del overlay */
+  }
+
+  /* Overlay similar a Beneficios */
+  .discipline-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.4) 0%,
+      rgba(0, 0, 0, 0.8) 100%
+    );
+    z-index: 1;
+    transition: all 0.3s ease;
+  }
+
+  .discipline-card__title {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    margin-bottom: var(--space-2);
+    transition: color var(--transition-fast);
+  }
+
+  .discipline-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--card-color);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+  }
+
+  .discipline-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  /* Efecto Overlay Hover */
+  .discipline-card:hover::after {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.1) 0%,
+      rgba(0, 0, 0, 0.2) 100%
+    );
+  }
+
+  .discipline-card:hover .discipline-card__title {
+    color: var(--card-color);
+  }
+
+  /* Efecto Movimiento Texto Global */
+  .discipline-card .discipline-card__link {
+    /* Mantenemos absolute para poder centrar y mover */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    transform: translateY(-50%);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Styles from previous block */
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-accent);
+    z-index: 3;
+    /* transition gap was here, but we are moving the whole block */
+  }
+
+  /* Estado Hover/Focus Global */
+  .discipline-card:hover .discipline-card__link,
+  .discipline-card:active .discipline-card__link {
+    top: var(--space-6);
+    transform: translateY(0);
+    gap: var(--space-2);
+  }
+</style>

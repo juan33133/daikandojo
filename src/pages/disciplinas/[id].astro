@@ -1,0 +1,567 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+
+import disciplinas from "../../data/disciplinas.json";
+import horarios from "../../data/horarios.json";
+
+export function getStaticPaths() {
+  return disciplinas
+    .filter((d) => d.activo !== false)
+    .map((d) => ({ params: { id: d.id } }));
+}
+
+const { id } = Astro.params;
+const current = disciplinas.find((d) => d.id === id)!;
+const activeDisciplinas = disciplinas.filter((d) => d.activo !== false);
+
+// Mapeo de ID de disciplina a nombres de actividad en el horario
+const disciplinaToActividades: Record<string, string[]> = {
+  "aikido-tomiki": ["Aikido"],
+  boxeo: ["Boxeo", "Kick Boxing / Boxeo"],
+  "brazilian-jiu-jitsu": ["BJJ (Jiu Jitsu)"],
+  bujinkan: ["Budo Taijutsu"],
+  hapkido: ["Hapkido"],
+  "ju-jutsu": ["Jiu Jitsu"],
+  "karate-do": ["Karate"],
+  kenjutsu: ["Kenjutsu"],
+  "kick-boxing-k1": ["Kick Boxing", "Kick Boxing / Boxeo"],
+  "krav-maga": ["Krav Maga"],
+  lucha: ["Lucha"],
+  "muay-thai": ["Muay Thai"],
+  "tang-soo-do": ["Tang Soo Do"],
+};
+
+// Función para obtener clases de una disciplina
+function getClasesForDisciplina(disciplinaId: string) {
+  const actividadesBuscadas = disciplinaToActividades[disciplinaId] || [];
+  type Clase = {
+    inicio: string;
+    fin: string;
+    actividad: string;
+    grupo: string;
+  };
+  type ClaseFiltrada = Clase & { dia: string; nombreMostrar: string };
+
+  const diasSemana = [
+    "lunes",
+    "martes",
+    "miercoles",
+    "jueves",
+    "viernes",
+  ] as const;
+  const diasNombres: Record<string, string> = {
+    lunes: "Lun",
+    martes: "Mar",
+    miercoles: "Mié",
+    jueves: "Jue",
+    viernes: "Vie",
+  };
+
+  const clasesFiltradas: ClaseFiltrada[] = [];
+  const disciplina = disciplinas.find((d) => d.id === disciplinaId);
+
+  diasSemana.forEach((dia) => {
+    const clasesDelDia =
+      (horarios.horario_semanal as Record<string, Clase[]>)[dia] || [];
+    clasesDelDia.forEach((clase) => {
+      const coincide = actividadesBuscadas.some(
+        (act) => clase.actividad === act || clase.actividad.includes(act),
+      );
+      if (coincide && disciplina) {
+        clasesFiltradas.push({
+          ...clase,
+          dia,
+          nombreMostrar: disciplina.nombre,
+        });
+      }
+    });
+  });
+
+  const clasesPorDiaYHora: Record<string, ClaseFiltrada[]> = {};
+  clasesFiltradas.forEach((clase) => {
+    const key = `${clase.dia}-${clase.inicio}`;
+    if (!clasesPorDiaYHora[key]) clasesPorDiaYHora[key] = [];
+    clasesPorDiaYHora[key].push(clase);
+  });
+
+  const franjasUnicas = [
+    ...new Set(clasesFiltradas.map((c) => c.inicio)),
+  ].sort();
+
+  return {
+    tieneClases: clasesFiltradas.length > 0,
+    clasesPorDiaYHora,
+    franjasUnicas,
+    diasSemana,
+    diasNombres,
+  };
+}
+---
+
+<BaseLayout
+  title="Disciplinas | Daikan Dojo"
+  description="Conoce todas nuestras disciplinas de artes marciales y deportes de contacto."
+>
+  <Header slot="header" currentPath="/disciplinas" />
+
+  <div class="disciplines-page">
+    <!-- Contenido principal con cards intercambiables -->
+    <main class="content">
+      {
+        activeDisciplinas.map((disc) => {
+          const clasesData = getClasesForDisciplina(disc.id);
+          const isActive = disc.id === id;
+
+          return (
+            <div
+              class:list={[
+                "disc-content-card",
+                { "disc-content-card--active": isActive },
+              ]}
+              data-discipline-id={disc.id}
+            >
+              <header class="disc-header" style={`--accent: ${disc.color}`}>
+                <div>
+                  <h1 class="disc-header__title">{disc.nombre}</h1>
+                  <p class="disc-header__desc">{disc.descripcion || ""}</p>
+                </div>
+              </header>
+
+              <section class="disc-content">
+                {clasesData.tieneClases ? (
+                  <div class="schedule-section">
+                    <h3>📅 Horario Semanal</h3>
+                    <div class="schedule-table-wrapper">
+                      <table class="schedule-table">
+                        <thead>
+                          <tr>
+                            <th>Hora</th>
+                            {clasesData.diasSemana.map((dia) => (
+                              <th>{clasesData.diasNombres[dia]}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {clasesData.franjasUnicas.map((franja) => (
+                            <tr>
+                              <td class="schedule-time">{franja}</td>
+                              {clasesData.diasSemana.map((dia) => {
+                                const clases =
+                                  clasesData.clasesPorDiaYHora[
+                                    `${dia}-${franja}`
+                                  ] || [];
+                                return (
+                                  <td
+                                    class={
+                                      clases.length > 0
+                                        ? "schedule-cell schedule-cell--active"
+                                        : "schedule-cell"
+                                    }
+                                  >
+                                    {clases.map((clase) => (
+                                      <div
+                                        class="schedule-class"
+                                        style={`--accent: ${disc.color}`}
+                                      >
+                                        <span class="schedule-class__name">
+                                          {clase.nombreMostrar}
+                                        </span>
+                                        <span class="schedule-class__group">
+                                          {clase.grupo}
+                                        </span>
+                                        <span class="schedule-class__time">
+                                          {clase.inicio}-{clase.fin}
+                                        </span>
+                                      </div>
+                                    ))}
+                                  </td>
+                                );
+                              })}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <p class="schedule-note">
+                      <a href="/horarios">Ver horario completo →</a>
+                    </p>
+                  </div>
+                ) : (
+                  <div class="schedule-section schedule-section--empty">
+                    <h3>📅 Horario Semanal</h3>
+                    <p>
+                      Actualmente no hay clases programadas para esta
+                      disciplina. <a href="/contacto">Contáctanos</a> para más
+                      información.
+                    </p>
+                  </div>
+                )}
+              </section>
+            </div>
+          );
+        })
+      }
+    </main>
+
+    <!-- Carrusel de disciplinas -->
+    <section class="disc-carousel" id="disc-carousel">
+      <div class="disc-carousel__track">
+        {
+          activeDisciplinas.map((disc, i) => {
+            const activeIndex = activeDisciplinas.findIndex((d) => d.id === id);
+            const idx = activeIndex >= 0 ? activeIndex : 0;
+            const position = i < idx ? "left" : i > idx ? "right" : "center";
+            return (
+              <button
+                type="button"
+                class:list={[
+                  "disc-carousel-card",
+                  { "disc-carousel-card--active": disc.id === id },
+                ]}
+                data-discipline-id={disc.id}
+                data-position={position}
+                style={`--card-color: ${disc.color}; ${disc.imagen ? `background-image: url('${disc.imagen}');` : ""}`}
+              >
+                <span class="disc-carousel-card__name">{disc.nombre}</span>
+              </button>
+            );
+          })
+        }
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  /* === Layout Principal === */
+  .disciplines-page {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - var(--header-height));
+    margin-top: var(--header-height);
+    position: relative;
+  }
+
+  /* === Contenido === */
+  .content {
+    flex: 1;
+    padding: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    min-height: calc(100vh - var(--header-height) - 280px);
+  }
+
+  /* Cards de contenido - solo una visible */
+  .disc-content-card {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .disc-content-card--active {
+    display: block;
+    opacity: 1;
+    animation: fadeIn 0.4s ease;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .disc-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: var(--color-bg-card);
+    border-radius: var(--radius-lg);
+    border-left: 4px solid var(--accent);
+    margin-bottom: 1.5rem;
+  }
+
+  .disc-header__title {
+    font-size: 1.75rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+  }
+  .disc-header__desc {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    max-width: 100%;
+  }
+
+  /* === Schedule Section === */
+  .schedule-section {
+    margin-bottom: 1.5rem;
+    padding: 1.25rem;
+    background: var(--color-bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .schedule-section h3 {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: var(--color-text);
+  }
+  .schedule-section--empty p {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+  }
+  .schedule-section--empty a {
+    color: var(--color-primary);
+  }
+  .schedule-table-wrapper {
+    overflow-x: auto;
+    margin-bottom: 0.75rem;
+  }
+  .schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.75rem;
+  }
+  .schedule-table th,
+  .schedule-table td {
+    padding: 0.5rem;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .schedule-table th {
+    background: rgba(255, 255, 255, 0.05);
+    font-weight: 600;
+    color: var(--color-text);
+  }
+  .schedule-time {
+    font-weight: 500;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    background: rgba(255, 255, 255, 0.02);
+  }
+  .schedule-cell {
+    min-width: 70px;
+    vertical-align: top;
+  }
+  .schedule-cell--active {
+    background: rgba(255, 255, 255, 0.03);
+  }
+  .schedule-class {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 0.4rem;
+    background: rgba(var(--accent, 200, 100, 50), 0.15);
+    border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    margin: 2px 0;
+  }
+  .schedule-class__name {
+    font-weight: 600;
+    font-size: 0.7rem;
+    color: var(--accent);
+  }
+  .schedule-class__group {
+    font-size: 0.65rem;
+    color: var(--color-text-muted);
+  }
+  .schedule-class__time {
+    font-size: 0.6rem;
+    color: var(--color-text-muted);
+    opacity: 0.8;
+  }
+  .schedule-note {
+    text-align: right;
+    margin: 0;
+  }
+  .schedule-note a {
+    font-size: 0.8rem;
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+  .schedule-note a:hover {
+    text-decoration: underline;
+  }
+
+  /* === Carrusel de Disciplinas (3D + fixed/sticky) === */
+  .disc-carousel {
+    position: sticky;
+    top: var(--header-height, 60px);
+    width: 100%;
+    height: 280px;
+    margin-top: auto;
+    background: transparent;
+    overflow: hidden;
+    perspective: 1400px;
+    perspective-origin: 50% 50%;
+    z-index: 50;
+  }
+
+  .disc-carousel__track {
+    display: flex;
+    height: 100%;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    transform-style: preserve-3d;
+    align-items: center;
+  }
+
+  .disc-carousel__track--dynamic .disc-carousel-card {
+    transition: none;
+  }
+
+  /* Tarjetas del carrusel con efecto 3D */
+  .disc-carousel-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+    height: 100%;
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f0f0f 100%);
+    background-size: cover;
+    background-position: center;
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    transition:
+      transform 0.5s cubic-bezier(0.33, 1, 0.68, 1),
+      border-color 0.3s ease,
+      opacity 0.3s ease;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+  }
+
+  .disc-carousel-card[data-position="left"] {
+    transform: rotateY(24deg) translateZ(-50px) scale(0.78);
+  }
+
+  .disc-carousel-card[data-position="center"] {
+    transform: rotateY(0) translateZ(50px) scale(1.08);
+  }
+
+  .disc-carousel-card[data-position="right"] {
+    transform: rotateY(-24deg) translateZ(-50px) scale(0.78);
+  }
+
+  /* Dark overlay for readability on image cards */
+  .disc-carousel-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0.7) 100%
+    );
+    z-index: 1;
+  }
+
+  .disc-carousel-card__name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text);
+    text-align: center;
+    z-index: 2;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+    padding: 0 0.75rem;
+    line-height: 1.3;
+  }
+
+  /* Tarjeta activa */
+  .disc-carousel-card--active {
+    border-color: var(--card-color);
+  }
+  .disc-carousel-card--active .disc-carousel-card__name {
+    color: var(--card-color);
+  }
+  .disc-carousel-card--active::after {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.15) 0%,
+      rgba(0, 0, 0, 0.45) 100%
+    );
+  }
+
+  /* === Desktop: Todo en una pantalla === */
+  @media (min-width: 769px) {
+    .disciplines-page {
+      height: calc(100vh - var(--header-height));
+      overflow: hidden;
+    }
+
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      min-height: 0;
+      padding: 1rem 1.5rem;
+    }
+
+    .disc-carousel {
+      flex-shrink: 0;
+      height: 280px;
+    }
+  }
+
+  /* === Mobile (< 768px) === */
+  @media (max-width: 768px) {
+    .disciplines-page {
+      min-height: 100vh;
+      padding-bottom: 33vh;
+    }
+
+    .content {
+      padding: 1rem;
+      min-height: auto;
+    }
+
+    .disc-header {
+      flex-direction: column;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .disc-header__title {
+      font-size: 1.5rem;
+    }
+
+    .disc-carousel {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 33vh;
+      z-index: 100;
+      background: transparent;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      top: auto;
+    }
+
+    /* En móvil, el carrusel se vuelve sticky cuando llega al footer */
+    .disc-carousel.sticky-top {
+      position: sticky;
+      top: var(--header-height, 60px);
+      bottom: auto;
+    }
+
+    .disc-carousel-card__name {
+      font-size: 0.75rem;
+    }
+  }
+</style>
+
+<script is:inline src="/scripts/discipline-carousel.js"></script>

@@ -1,0 +1,551 @@
+{
+    "informacion_gimnasio": {
+        "telefono": "661313739"
+    },
+    "clasesDisponibles": [
+        {
+            "id": "aikido-adultos",
+            "nombre": "Aikido",
+            "nivel": "Adultos",
+            "categoria": "tradicional"
+        },
+        {
+            "id": "aikido-infantil",
+            "nombre": "Aikido",
+            "nivel": "Infantil",
+            "categoria": "tradicional"
+        },
+        {
+            "id": "aikido-general",
+            "nombre": "Aikido",
+            "nivel": "General",
+            "categoria": "tradicional"
+        },
+        {
+            "id": "kravmaga-infantil",
+            "nombre": "Krav Maga",
+            "nivel": "Infantil",
+            "categoria": "defensa"
+        },
+        {
+            "id": "kravmaga-juvenil",
+            "nombre": "Krav Maga",
+            "nivel": "Juvenil",
+            "categoria": "defensa"
+        },
+        {
+            "id": "kravmaga-adultos",
+            "nombre": "Krav Maga",
+            "nivel": "Adultos",
+            "categoria": "defensa"
+        },
+        {
+            "id": "karate-infantil",
+            "nombre": "Karate",
+            "nivel": "Infantil",
+            "categoria": "tradicional"
+        },
+        {
+            "id": "karate-adultos",
+            "nombre": "Karate",
+            "nivel": "Adultos",
+            "categoria": "tradicional"
+        },
+        {
+            "id": "kickboxing-general",
+            "nombre": "Kick Boxing / Boxeo",
+            "nivel": "General",
+            "categoria": "combate"
+        },
+        {
+            "id": "tangsoo-general",
+            "nombre": "Tang Soo Do",
+            "nivel": "General",
+            "categoria": "tradicional"
+        },
+        {
+            "id": "hapkido-general",
+            "nombre": "Hapkido",
+            "nivel": "General",
+            "categoria": "tradicional"
+        },
+        {
+            "id": "muaythai-general",
+            "nombre": "Muay Thai",
+            "nivel": "General",
+            "categoria": "combate"
+        },
+        {
+            "id": "kenjutsu-general",
+            "nombre": "Kenjutsu",
+            "nivel": "General",
+            "categoria": "tradicional"
+        },
+        {
+            "id": "budo-general",
+            "nombre": "Budo Taijutsu",
+            "nivel": "General",
+            "categoria": "tradicional"
+        },
+        {
+            "id": "bjj-infantil",
+            "nombre": "BJJ (Jiu Jitsu)",
+            "nivel": "Infantil",
+            "categoria": "combate"
+        },
+        {
+            "id": "bjj-juvenil",
+            "nombre": "BJJ (Jiu Jitsu)",
+            "nivel": "Juvenil",
+            "categoria": "combate"
+        },
+        {
+            "id": "bjj-general",
+            "nombre": "BJJ (Jiu Jitsu)",
+            "nivel": "General",
+            "categoria": "combate"
+        },
+        {
+            "id": "kickboxing-infantil",
+            "nombre": "Kick Boxing",
+            "nivel": "Infantil",
+            "categoria": "combate"
+        },
+        {
+            "id": "taijiquan-general",
+            "nombre": "Taijiquan",
+            "nivel": "General",
+            "categoria": "bienestar"
+        },
+        {
+            "id": "boxeo-general",
+            "nombre": "Boxeo",
+            "nivel": "General",
+            "categoria": "combate"
+        },
+        {
+            "id": "lucha-general",
+            "nombre": "Lucha",
+            "nivel": "General",
+            "categoria": "combate"
+        },
+        {
+            "id": "qigong-general",
+            "nombre": "Qigong",
+            "nivel": "General",
+            "categoria": "bienestar"
+        }
+    ],
+    "categorias": {
+        "combate": {
+            "nombre": "Deportes de Combate",
+            "color": "#e74c3c",
+            "bg": "rgba(231,76,60,0.2)"
+        },
+        "tradicional": {
+            "nombre": "Artes Tradicionales",
+            "color": "#3498db",
+            "bg": "rgba(52,152,219,0.2)"
+        },
+        "defensa": {
+            "nombre": "Defensa Personal",
+            "color": "#9b59b6",
+            "bg": "rgba(155,89,182,0.2)"
+        },
+        "bienestar": {
+            "nombre": "Bienestar",
+            "color": "#27ae60",
+            "bg": "rgba(39,174,96,0.2)"
+        }
+    },
+    "franjas": [
+        "09:00-10:00",
+        "09:30-10:30",
+        "10:00-11:00",
+        "11:00-12:00",
+        "16:30-17:30",
+        "17:00-18:00",
+        "17:30-18:30",
+        "18:00-19:00",
+        "18:30-19:30",
+        "19:00-20:00",
+        "19:30-20:30",
+        "20:00-21:00",
+        "20:30-21:30",
+        "21:00-22:00",
+        "21:30-22:30"
+    ],
+    "dias": [
+        "Lun",
+        "Mar",
+        "Mié",
+        "Jue",
+        "Vie"
+    ],
+    "horario_semanal": {
+        "lunes": [
+            {
+                "inicio": "10:00",
+                "fin": "12:00",
+                "actividad": "Aikido",
+                "grupo": "Adultos"
+            },
+            {
+                "inicio": "17:00",
+                "fin": "17:45",
+                "actividad": "Krav Maga",
+                "grupo": "Infantil"
+            },
+            {
+                "inicio": "17:00",
+                "fin": "18:00",
+                "actividad": "Aikido",
+                "grupo": "Infantil"
+            },
+            {
+                "inicio": "17:00",
+                "fin": "18:00",
+                "actividad": "Karate",
+                "grupo": "Infantil"
+            },
+            {
+                "inicio": "18:00",
+                "fin": "19:00",
+                "actividad": "Krav Maga",
+                "grupo": "Juvenil"
+            },
+            {
+                "inicio": "19:30",
+                "fin": "20:30",
+                "actividad": "Aikido",
+                "grupo": "General"
+            },
+            {
+                "inicio": "19:30",
+                "fin": "20:30",
+                "actividad": "Krav Maga",
+                "grupo": "Adultos"
+            },
+            {
+                "inicio": "19:30",
+                "fin": "20:30",
+                "actividad": "Karate",
+                "grupo": "Adultos"
+            },
+            {
+                "inicio": "20:30",
+                "fin": "21:30",
+                "actividad": "Kick Boxing / Boxeo",
+                "grupo": "General"
+            },
+            {
+                "inicio": "20:30",
+                "fin": "21:30",
+                "actividad": "Tang Soo Do",
+                "grupo": "General"
+            },
+            {
+                "inicio": "21:00",
+                "fin": "22:00",
+                "actividad": "Hapkido",
+                "grupo": "General"
+            },
+            {
+                "inicio": "21:00",
+                "fin": "22:00",
+                "actividad": "Muay Thai",
+                "grupo": "General"
+            },
+            {
+                "inicio": "21:30",
+                "fin": "22:30",
+                "actividad": "Kenjutsu",
+                "grupo": "General"
+            }
+        ],
+        "martes": [
+            {
+                "inicio": "09:30",
+                "fin": "11:00",
+                "actividad": "Budo Taijutsu",
+                "grupo": "General"
+            },
+            {
+                "inicio": "11:00",
+                "fin": "12:00",
+                "actividad": "Kick Boxing / Boxeo",
+                "grupo": "General"
+            },
+            {
+                "inicio": "16:30",
+                "fin": "17:30",
+                "actividad": "BJJ (Jiu Jitsu)",
+                "grupo": "Infantil"
+            },
+            {
+                "inicio": "17:00",
+                "fin": "18:00",
+                "actividad": "Kick Boxing",
+                "grupo": "Infantil"
+            },
+            {
+                "inicio": "17:30",
+                "fin": "18:30",
+                "actividad": "BJJ (Jiu Jitsu)",
+                "grupo": "Juvenil"
+            },
+            {
+                "inicio": "18:00",
+                "fin": "19:00",
+                "actividad": "Taijiquan",
+                "grupo": "General"
+            },
+            {
+                "inicio": "18:00",
+                "fin": "19:00",
+                "actividad": "BJJ (Jiu Jitsu)",
+                "grupo": "Infantil"
+            },
+            {
+                "inicio": "18:30",
+                "fin": "20:00",
+                "actividad": "Boxeo",
+                "grupo": "General"
+            },
+            {
+                "inicio": "18:30",
+                "fin": "20:00",
+                "actividad": "Lucha",
+                "grupo": "General"
+            },
+            {
+                "inicio": "19:00",
+                "fin": "20:30",
+                "actividad": "BJJ (Jiu Jitsu)",
+                "grupo": "General"
+            },
+            {
+                "inicio": "19:00",
+                "fin": "20:00",
+                "actividad": "Qigong",
+                "grupo": "General"
+            },
+            {
+                "inicio": "20:00",
+                "fin": "21:30",
+                "actividad": "Budo Taijutsu",
+                "grupo": "General"
+            },
+            {
+                "inicio": "20:00",
+                "fin": "21:30",
+                "actividad": "BJJ (Jiu Jitsu)",
+                "grupo": "General"
+            }
+        ],
+        "miercoles": [
+            {
+                "inicio": "10:00",
+                "fin": "12:00",
+                "actividad": "Aikido",
+                "grupo": "Adultos"
+            },
+            {
+                "inicio": "17:00",
+                "fin": "17:45",
+                "actividad": "Krav Maga",
+                "grupo": "Infantil"
+            },
+            {
+                "inicio": "17:00",
+                "fin": "18:00",
+                "actividad": "Aikido",
+                "grupo": "Infantil"
+            },
+            {
+                "inicio": "17:00",
+                "fin": "18:00",
+                "actividad": "Karate",
+                "grupo": "Infantil"
+            },
+            {
+                "inicio": "18:00",
+                "fin": "19:00",
+                "actividad": "Krav Maga",
+                "grupo": "Juvenil"
+            },
+            {
+                "inicio": "19:30",
+                "fin": "20:30",
+                "actividad": "Aikido",
+                "grupo": "General"
+            },
+            {
+                "inicio": "19:30",
+                "fin": "20:30",
+                "actividad": "Krav Maga",
+                "grupo": "Adultos"
+            },
+            {
+                "inicio": "19:30",
+                "fin": "20:30",
+                "actividad": "Karate",
+                "grupo": "Adultos"
+            },
+            {
+                "inicio": "20:30",
+                "fin": "21:30",
+                "actividad": "Kick Boxing / Boxeo",
+                "grupo": "General"
+            },
+            {
+                "inicio": "20:30",
+                "fin": "21:30",
+                "actividad": "Tang Soo Do",
+                "grupo": "General"
+            },
+            {
+                "inicio": "21:00",
+                "fin": "22:00",
+                "actividad": "Hapkido",
+                "grupo": "General"
+            },
+            {
+                "inicio": "21:00",
+                "fin": "22:00",
+                "actividad": "Muay Thai",
+                "grupo": "General"
+            },
+            {
+                "inicio": "21:30",
+                "fin": "22:30",
+                "actividad": "Kenjutsu",
+                "grupo": "General"
+            }
+        ],
+        "jueves": [
+            {
+                "inicio": "09:30",
+                "fin": "11:00",
+                "actividad": "Budo Taijutsu",
+                "grupo": "General"
+            },
+            {
+                "inicio": "11:00",
+                "fin": "12:00",
+                "actividad": "Kick Boxing / Boxeo",
+                "grupo": "General"
+            },
+            {
+                "inicio": "16:30",
+                "fin": "17:30",
+                "actividad": "BJJ (Jiu Jitsu)",
+                "grupo": "Infantil"
+            },
+            {
+                "inicio": "17:00",
+                "fin": "18:00",
+                "actividad": "Kick Boxing",
+                "grupo": "Infantil"
+            },
+            {
+                "inicio": "17:30",
+                "fin": "18:30",
+                "actividad": "BJJ (Jiu Jitsu)",
+                "grupo": "Juvenil"
+            },
+            {
+                "inicio": "18:00",
+                "fin": "19:00",
+                "actividad": "Qigong",
+                "grupo": "General"
+            },
+            {
+                "inicio": "18:00",
+                "fin": "19:00",
+                "actividad": "BJJ (Jiu Jitsu)",
+                "grupo": "Infantil"
+            },
+            {
+                "inicio": "18:30",
+                "fin": "20:00",
+                "actividad": "Boxeo",
+                "grupo": "General"
+            },
+            {
+                "inicio": "18:30",
+                "fin": "20:00",
+                "actividad": "Lucha",
+                "grupo": "General"
+            },
+            {
+                "inicio": "19:00",
+                "fin": "20:30",
+                "actividad": "BJJ (Jiu Jitsu)",
+                "grupo": "General"
+            },
+            {
+                "inicio": "19:00",
+                "fin": "20:00",
+                "actividad": "Taijiquan",
+                "grupo": "General"
+            },
+            {
+                "inicio": "20:00",
+                "fin": "21:30",
+                "actividad": "Budo Taijutsu",
+                "grupo": "General"
+            },
+            {
+                "inicio": "20:00",
+                "fin": "21:30",
+                "actividad": "BJJ (Jiu Jitsu)",
+                "grupo": "General"
+            }
+        ],
+        "viernes": [
+            {
+                "inicio": "10:00",
+                "fin": "12:00",
+                "actividad": "Aikido",
+                "grupo": "Adultos"
+            },
+            {
+                "inicio": "17:00",
+                "fin": "17:45",
+                "actividad": "Krav Maga",
+                "grupo": "Infantil"
+            },
+            {
+                "inicio": "18:00",
+                "fin": "19:00",
+                "actividad": "Krav Maga",
+                "grupo": "Juvenil"
+            },
+            {
+                "inicio": "19:30",
+                "fin": "20:30",
+                "actividad": "Krav Maga",
+                "grupo": "Adultos"
+            },
+            {
+                "inicio": "19:30",
+                "fin": "20:30",
+                "actividad": "Karate",
+                "grupo": "Adultos"
+            },
+            {
+                "inicio": "20:30",
+                "fin": "21:30",
+                "actividad": "Kick Boxing / Boxeo",
+                "grupo": "General"
+            },
+            {
+                "inicio": "21:00",
+                "fin": "22:00",
+                "actividad": "Muay Thai",
+                "grupo": "General"
+            }
+        ]
+    }
+}

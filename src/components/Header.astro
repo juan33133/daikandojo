@@ -1,0 +1,405 @@
+---
+import disciplinas from "../data/disciplinas.json";
+
+interface Props {
+  currentPath?: string;
+  transparent?: boolean;
+}
+
+const { currentPath = "", transparent = false } = Astro.props;
+---
+
+<header class:list={["header", { "header--transparent": transparent }]}>
+  <div class="container">
+    <nav class="header__nav">
+      <!-- Logo -->
+      <a href="/" class="header__logo">
+        <img
+          src="/images/recursos/iconoDaikan.png"
+          alt="Daikan Logo"
+          class="header__logo-icon"
+        />
+        <div class="header__logo-text">
+          <span class="header__logo-name">Daikan Dojo</span>
+          <span class="header__logo-tagline">Artes Marciales</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <div class="header__menu">
+        <a
+          href="/"
+          class:list={[
+            "nav__link",
+            { "nav__link--active": currentPath === "/" },
+          ]}
+        >
+          Inicio
+        </a>
+
+        <a
+          href="/asociacion"
+          class:list={[
+            "nav__link",
+            { "nav__link--active": currentPath === "/asociacion" },
+          ]}
+        >
+          Asociación
+        </a>
+
+        <!-- Dropdown Disciplinas -->
+        <div class="dropdown">
+          <a
+            href="/disciplinas"
+            class:list={[
+              "nav__link",
+              { "nav__link--active": currentPath.includes("/disciplinas") },
+            ]}
+          >
+            Disciplinas ▾
+          </a>
+          <div class="dropdown__content">
+            {
+              disciplinas
+                .filter((disc) => disc.activo !== false)
+                .slice(0, 7)
+                .map((disc) => (
+                  <a href={`/disciplinas/${disc.id}`} class="dropdown__item">
+                    {disc.nombre}
+                  </a>
+                ))
+            }
+            <a href="/disciplinas" class="dropdown__item dropdown__item--more">
+              Ver todas →
+            </a>
+          </div>
+        </div>
+
+        <a
+          href="/horarios"
+          class:list={[
+            "nav__link",
+            { "nav__link--active": currentPath === "/horarios" },
+          ]}
+        >
+          Horarios
+        </a>
+
+        <a
+          href="/contacto"
+          class:list={[
+            "nav__link",
+            { "nav__link--active": currentPath === "/contacto" },
+          ]}
+        >
+          Contacto
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button
+        class="header__mobile-btn"
+        id="mobile-menu-btn"
+        aria-label="Abrir menú"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-menu__content">
+      <a href="/" class="mobile-menu__link">Inicio</a>
+      <a href="/asociacion" class="mobile-menu__link">Asociación</a>
+      <a href="/disciplinas" class="mobile-menu__link">Disciplinas</a>
+      <a href="/horarios" class="mobile-menu__link">Horarios</a>
+      <a href="/contacto" class="mobile-menu__link">Contacto</a>
+
+      <!-- Social Media Icons -->
+      <div class="mobile-menu__social">
+        <a
+          href="https://wa.me/34661313739"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mobile-menu__social-link mobile-menu__social-link--whatsapp"
+          aria-label="WhatsApp"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            width="24"
+            height="24"
+          >
+            <path
+              d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+            ></path>
+          </svg>
+          WhatsApp
+        </a>
+        <a
+          href="https://www.instagram.com/daikandojo/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mobile-menu__social-link mobile-menu__social-link--instagram"
+          aria-label="Instagram"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            width="24"
+            height="24"
+          >
+            <path
+              d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"
+            ></path>
+          </svg>
+          Instagram
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(15, 15, 15, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.5s ease;
+  }
+
+  /* Solo para home: inicia transparente */
+  .header--transparent {
+    background: transparent !important;
+    backdrop-filter: blur(0) !important;
+    border-bottom-color: transparent !important;
+  }
+
+  /* Al hacer scroll, siempre negro (mayor especificidad) */
+  .header.is-scrolled,
+  .header--transparent.is-scrolled {
+    background: rgba(15, 15, 15, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .header__nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--header-height);
+  }
+
+  .header__logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    text-decoration: none;
+  }
+
+  .header__logo-icon {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+  }
+
+  .header__logo-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .header__logo-name {
+    font-family: var(--font-family-heading);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    line-height: 1.2;
+  }
+
+  .header__logo-tagline {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .header__menu {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  .header__mobile-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 30px;
+    height: 30px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .header__mobile-btn span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--color-text);
+    transition: all var(--transition-fast);
+  }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    width: 100%; /* Ancho completo sin incluir scrollbar */
+    height: calc(
+      100vh - var(--header-height)
+    ); /* Altura desde el header hasta abajo */
+    background: transparent; /* Fondo transparente */
+    padding: var(--space-6);
+    z-index: 9999; /* Por encima de otros contenedores */
+    overflow-y: auto; /* Scroll vertical si es necesario */
+    overflow-x: hidden; /* Sin scroll horizontal */
+  }
+
+  .mobile-menu.is-open {
+    display: block;
+  }
+
+  .mobile-menu__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .mobile-menu__link {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    padding: var(--space-3) var(--space-4);
+    background: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente */
+    backdrop-filter: blur(10px); /* Efecto glassmorphism */
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .mobile-menu__link:hover {
+    background: rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  /* Social Media Icons in Mobile Menu */
+  .mobile-menu__social {
+    display: flex;
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+    padding-top: var(--space-6);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .mobile-menu__social-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: white;
+    border: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .mobile-menu__social-link--whatsapp {
+    background: #25d366; /* Fondo verde sólido */
+  }
+
+  .mobile-menu__social-link--whatsapp:hover {
+    background: #20bd5a;
+    transform: scale(1.05);
+  }
+
+  .mobile-menu__social-link--instagram {
+    background: linear-gradient(
+      45deg,
+      #f09433,
+      #e6683c,
+      #dc2743,
+      #cc2366,
+      #bc1888
+    ); /* Gradiente sólido */
+  }
+
+  .mobile-menu__social-link--instagram:hover {
+    background: linear-gradient(
+      45deg,
+      #e08323,
+      #d6582c,
+      #cc1733,
+      #bc1356,
+      #ac0878
+    );
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 1024px) {
+    .header__menu {
+      display: none;
+    }
+
+    .header__mobile-btn {
+      display: flex;
+    }
+  }
+</style>
+
+<script>
+  const btn = document.getElementById("mobile-menu-btn");
+  const menu = document.getElementById("mobile-menu");
+  const header = document.querySelector(".header");
+
+  btn?.addEventListener("click", () => {
+    menu?.classList.toggle("is-open");
+    // Prevenir scroll horizontal cuando el menú está abierto
+    if (menu?.classList.contains("is-open")) {
+      document.body.style.overflowX = "hidden";
+    } else {
+      document.body.style.overflowX = "";
+    }
+  });
+
+  // Detectar scroll para cambiar fondo del header
+  const updateHeader = () => {
+    // 20vh = 20% de la altura del viewport
+    const scrollThreshold = window.innerHeight * 1.25;
+
+    if (window.scrollY > scrollThreshold) {
+      header?.classList.add("is-scrolled");
+    } else {
+      header?.classList.remove("is-scrolled");
+    }
+  };
+
+  window.addEventListener("scroll", updateHeader);
+  // Solo llamar updateHeader si ya hay scroll al cargar
+  if (window.scrollY > 20) {
+    updateHeader();
+  }
+</script>
