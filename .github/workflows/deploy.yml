@@ -28,7 +28,6 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
-          # IMPORTANTE: Ruta para planes Business con subdominios/dominios múltiples
           server-dir: domains/daikandojo.es/public_html/ 
           protocol: ftp
-          port: 21
+          port: 21 
