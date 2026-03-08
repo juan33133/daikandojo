@@ -1,11 +1,21 @@
 ---
 import disciplinas from "../../data/disciplinas.json";
 
-// Redirigir a la primera disciplina activa
+// Obtener la primera disciplina activa para la redirección
 const firstDiscipline = disciplinas.find((d) => d.activo !== false);
-if (firstDiscipline) {
-    return Astro.redirect(`/disciplinas/${firstDiscipline.id}`);
-}
-// Si no hay disciplinas activas, redirigir a inicio
-return Astro.redirect("/");
+const redirectUrl = firstDiscipline
+    ? `/disciplinas/${firstDiscipline.id}`
+    : "/";
 ---
+
+<html>
+    <head>
+        <meta http-equiv="refresh" content={`0;url=${redirectUrl}`} />
+        <title>Redirecting...</title>
+    </head>
+    <body>
+        <script define:vars={{ redirectUrl }}>
+            window.location.replace(redirectUrl);
+        </script>
+    </body>
+</html>
