@@ -267,14 +267,13 @@ const { currentPath = "", transparent = false } = Astro.props;
     left: 0;
     right: 0;
     width: 100%; /* Ancho completo sin incluir scrollbar */
-    height: calc(
-      100vh - var(--header-height)
-    ); /* Altura desde el header hasta abajo */
-    background: transparent; /* Fondo transparente */
+    height: auto; /* Solo la altura del contenido */
+    background: rgba(15, 15, 15, 1); /* Fondo opaco */
     padding: var(--space-6);
     z-index: 9999; /* Por encima de otros contenedores */
     overflow-y: auto; /* Scroll vertical si es necesario */
     overflow-x: hidden; /* Sin scroll horizontal */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .mobile-menu.is-open {
