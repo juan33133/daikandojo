@@ -4,6 +4,7 @@
         "nombre": "Karate Do",
         "descripcion": "Arte marcial de Okinawa que desarrolla técnicas de golpeo, bloqueo y patadas. Fortalece el cuerpo y la disciplina mental.",
         "color": "#f39c12",
+        "imagen": "/images/disciplinas/karate.jpeg",
         "activo": true,
         "index": 1
     },

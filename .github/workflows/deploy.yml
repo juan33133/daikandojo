@@ -1,4 +1,4 @@
-name: Despliegue Astro ProfeJuan
+name: Despliegue Astro Daikan Dojo
 on:
   push:
     branches:
