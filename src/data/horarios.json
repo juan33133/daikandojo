@@ -315,12 +315,6 @@
                 "grupo": "General"
             },
             {
-                "inicio": "18:00",
-                "fin": "19:00",
-                "actividad": "Jiu Jitsu",
-                "grupo": "Infantil"
-            },
-            {
                 "inicio": "18:30",
                 "fin": "20:00",
                 "actividad": "Boxeo",
@@ -473,12 +467,6 @@
                 "fin": "19:00",
                 "actividad": "Qigong",
                 "grupo": "General"
-            },
-            {
-                "inicio": "18:00",
-                "fin": "19:00",
-                "actividad": "Jiu Jitsu",
-                "grupo": "Infantil"
             },
             {
                 "inicio": "18:30",
