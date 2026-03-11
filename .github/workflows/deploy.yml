@@ -19,7 +19,8 @@ jobs:
       - name: 📦 Instalar y Construir
         run: |
           npm ci
-          npx --yes astro build
+          npm install
+          npx astro build
 
       - name: 🚀 Subir a Carpeta de Dominio
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5

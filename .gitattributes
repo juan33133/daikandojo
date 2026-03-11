@@ -24,13 +24,13 @@
 
 # Scripts de Windows: CRLF (se usan sólo en Windows)
 *.bat       text eol=crlf
-*.cmd       text eol=crlf
+*.cmd       text eol=crlf                                                                                                                                      
 *.ps1       text eol=crlf
 
 # Archivos binarios: sin conversión
 *.png       binary
 *.jpg       binary
-*.jpeg      binary
+*.jpeg      binary                                                                                                  
 *.gif       binary
 *.webp      binary
 *.ico       binary
