@@ -103,6 +103,7 @@
         "descripcion": "Arte marcial coreano tradicional que combina técnicas de mano y pie con filosofía oriental. Desarrollo integral del practicante.",
         "color": "#34495e",
         "activo": true,
+        "imagen": "/images/disciplinas/tangSooDo.jpeg",
         "index": 14
     }
 ]
