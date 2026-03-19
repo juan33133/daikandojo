@@ -100,8 +100,8 @@ function getClasesForDisciplina(disciplinaId: string) {
 ---
 
 <BaseLayout
-  title="Disciplinas | Daikan Dojo"
-  description="Conoce todas nuestras disciplinas de artes marciales y deportes de contacto."
+  title={`${current.nombre} - Clases en Málaga`}
+  description={current.descripcion || `Clases de ${current.nombre} en Daikan Dojo, Málaga. Consulta horarios y únete a nuestra escuela de artes marciales.`}
 >
   <Header slot="header" currentPath="/disciplinas" />
 
