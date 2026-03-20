@@ -154,6 +154,17 @@ function getClasesForDisciplina(disciplinaId: string) {
               <div class="disc-body">
                 <div class="disc-info">
                   <p class="disc-desc">{disc.descripcion || ""}</p>
+                  {disc.imagen && (
+                    <div class={`disc-image disc-image--v${(activeDisciplinas.indexOf(disc) % 3) + 1}`}>
+                      <img
+                        src={disc.imagen}
+                        alt={`${disc.nombre} en Daikan Dojo`}
+                        loading="lazy"
+                        width="500"
+                        height="340"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <div class="disc-schedule">
@@ -394,6 +405,44 @@ function getClasesForDisciplina(disciplinaId: string) {
     margin-bottom: var(--space-6);
   }
 
+  /* ---- Imagen de la disciplina (solo desktop) ---- */
+  .disc-image {
+    display: none; /* Oculta en móvil por defecto */
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+  }
+  .disc-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+  .disc-image:hover img {
+    transform: scale(1.04);
+  }
+
+  /* Variante 1: Panorámica ancha */
+  .disc-image--v1 {
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius-xl);
+  }
+
+  /* Variante 2: Clásica 4:3 */
+  .disc-image--v2 {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-lg);
+  }
+
+  /* Variante 3: Cuadrada */
+  .disc-image--v3 {
+    aspect-ratio: 1 / 1;
+    max-width: 85%;
+    border-radius: var(--radius-xl);
+  }
+
   /* ---- Grid cuerpo: info + horario ---- */
   .disc-body {
     display: flex;
@@ -537,7 +586,12 @@ function getClasesForDisciplina(disciplinaId: string) {
     }
 
     .disc-desc {
-      margin-bottom: 0;
+      margin-bottom: var(--space-5);
+    }
+
+    /* Mostrar imágenes en desktop */
+    .disc-image {
+      display: block;
     }
   }
 
