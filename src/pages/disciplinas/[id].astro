@@ -106,7 +106,34 @@ function getClasesForDisciplina(disciplinaId: string) {
   <Header slot="header" currentPath="/disciplinas" />
 
   <div class="disciplines-page">
-    <!-- Contenido principal con cards intercambiables -->
+    <!-- ========== CARRUSEL SUPERIOR (Avatares) ========== -->
+    <nav class="disc-nav" aria-label="Selector de disciplinas" id="disc-nav">
+      {
+        activeDisciplinas.map((disc) => (
+          <button
+            type="button"
+            class:list={[
+              "disc-nav__btn",
+              { active: disc.id === id },
+            ]}
+            data-discipline-id={disc.id}
+            aria-pressed={disc.id === id ? "true" : "false"}
+          >
+            <img
+              class="disc-nav__avatar"
+              src={disc.imagen}
+              alt={`Icono de ${disc.nombre}`}
+              loading="lazy"
+              width="72"
+              height="72"
+            />
+            <span class="disc-nav__label">{disc.nombre}</span>
+          </button>
+        ))
+      }
+    </nav>
+
+    <!-- ========== CONTENIDO PRINCIPAL ========== -->
     <main class="content">
       {
         activeDisciplinas.map((disc) => {
@@ -116,161 +143,228 @@ function getClasesForDisciplina(disciplinaId: string) {
           return (
             <div
               class:list={[
-                "disc-content-card",
-                { "disc-content-card--active": isActive },
+                "disc-panel",
+                { "disc-panel--active": isActive },
               ]}
               data-discipline-id={disc.id}
+              style={`--accent: ${disc.color}`}
             >
-              <header class="disc-header" style={`--accent: ${disc.color}`}>
-                <div>
-                  <h1 class="disc-header__title">{disc.nombre}</h1>
-                  <p class="disc-header__desc">{disc.descripcion || ""}</p>
-                </div>
-              </header>
+              <h1 class="disc-title">{disc.nombre}</h1>
 
-              <section class="disc-content">
-                {clasesData.tieneClases ? (
-                  <div class="schedule-section">
-                    <h3>📅 Horario Semanal</h3>
-                    <div class="schedule-table-wrapper">
-                      <table class="schedule-table">
-                        <thead>
-                          <tr>
-                            <th>Hora</th>
-                            {clasesData.diasSemana.map((dia) => (
-                              <th>{clasesData.diasNombres[dia]}</th>
-                            ))}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {clasesData.franjasUnicas.map((franja) => (
+              <div class="disc-body">
+                <div class="disc-info">
+                  <p class="disc-desc">{disc.descripcion || ""}</p>
+                </div>
+
+                <div class="disc-schedule">
+                  {clasesData.tieneClases ? (
+                    <div class="schedule-section">
+                      <h3>📅 Horario Semanal</h3>
+                      <div class="schedule-table-wrapper">
+                        <table class="schedule-table">
+                          <thead>
                             <tr>
-                              <td class="schedule-time">{franja}</td>
-                              {clasesData.diasSemana.map((dia) => {
-                                const clases =
-                                  clasesData.clasesPorDiaYHora[
-                                    `${dia}-${franja}`
-                                  ] || [];
-                                return (
-                                  <td
-                                    class={
-                                      clases.length > 0
-                                        ? "schedule-cell schedule-cell--active"
-                                        : "schedule-cell"
-                                    }
-                                  >
-                                    {clases.map((clase) => (
-                                      <div
-                                        class="schedule-class"
-                                        style={`--accent: ${disc.color}`}
-                                      >
-                                        <span class="schedule-class__name">
-                                          {clase.nombreMostrar}
-                                        </span>
-                                        <span class="schedule-class__group">
-                                          {clase.grupo}
-                                        </span>
-                                        <span class="schedule-class__time">
-                                          {clase.inicio}-{clase.fin}
-                                        </span>
-                                      </div>
-                                    ))}
-                                  </td>
-                                );
-                              })}
+                              <th>Hora</th>
+                              {clasesData.diasSemana.map((dia) => (
+                                <th>{clasesData.diasNombres[dia]}</th>
+                              ))}
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                          </thead>
+                          <tbody>
+                            {clasesData.franjasUnicas.map((franja) => (
+                              <tr>
+                                <td class="schedule-time">{franja}</td>
+                                {clasesData.diasSemana.map((dia) => {
+                                  const clases =
+                                    clasesData.clasesPorDiaYHora[
+                                      `${dia}-${franja}`
+                                    ] || [];
+                                  return (
+                                    <td
+                                      class={
+                                        clases.length > 0
+                                          ? "schedule-cell schedule-cell--active"
+                                          : "schedule-cell"
+                                      }
+                                    >
+                                      {clases.map((clase) => (
+                                        <div
+                                          class="schedule-class"
+                                          style={`--accent: ${disc.color}`}
+                                        >
+                                          <span class="schedule-class__name">
+                                            {clase.nombreMostrar}
+                                          </span>
+                                          <span class="schedule-class__group">
+                                            {clase.grupo}
+                                          </span>
+                                          <span class="schedule-class__time">
+                                            {clase.inicio}-{clase.fin}
+                                          </span>
+                                        </div>
+                                      ))}
+                                    </td>
+                                  );
+                                })}
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                      <p class="schedule-note">
+                        <a href="/horarios">Ver horario completo →</a>
+                      </p>
                     </div>
-                    <p class="schedule-note">
-                      <a href="/horarios">Ver horario completo →</a>
-                    </p>
-                  </div>
-                ) : (
-                  <div class="schedule-section schedule-section--empty">
-                    <h3>📅 Horario Semanal</h3>
-                    <p>
-                      Actualmente no hay clases programadas para esta
-                      disciplina. <a href="/contacto">Contáctanos</a> para más
-                      información.
-                    </p>
-                  </div>
-                )}
-              </section>
+                  ) : (
+                    <div class="schedule-section schedule-section--empty">
+                      <h3>📅 Horario Semanal</h3>
+                      <p>
+                        Actualmente no hay clases programadas para esta
+                        disciplina. <a href="/contacto">Contáctanos</a> para más
+                        información.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           );
         })
       }
     </main>
-
-    <!-- Carrusel de disciplinas -->
-    <section class="disc-carousel" id="disc-carousel">
-      <div class="disc-carousel__track">
-        {
-          activeDisciplinas.map((disc, i) => {
-            const activeIndex = activeDisciplinas.findIndex((d) => d.id === id);
-            const idx = activeIndex >= 0 ? activeIndex : 0;
-            const position = i < idx ? "left" : i > idx ? "right" : "center";
-            return (
-              <button
-                type="button"
-                class:list={[
-                  "disc-carousel-card",
-                  { "disc-carousel-card--active": disc.id === id },
-                ]}
-                data-discipline-id={disc.id}
-                data-position={position}
-                style={`--card-color: ${disc.color}; ${disc.imagen ? `background-image: url('${disc.imagen}');` : ""}`}
-              >
-                <span class="disc-carousel-card__name">{disc.nombre}</span>
-              </button>
-            );
-          })
-        }
-      </div>
-    </section>
   </div>
 </BaseLayout>
 
-<style>
-  /* === Layout Principal === */
+<style is:global>
+  /* ===========================================
+     DISCIPLINAS - Layout Principal
+     =========================================== */
   .disciplines-page {
     display: flex;
     flex-direction: column;
     min-height: calc(100vh - var(--header-height));
     margin-top: var(--header-height);
-    position: relative;
   }
 
-  /* === Contenido === */
-  .content {
+  /* ===========================================
+     CARRUSEL SUPERIOR — Avatares + Scroll
+     =========================================== */
+  .disc-nav {
+    display: flex;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-4);
+    background: var(--color-bg-alt);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    position: sticky;
+    top: var(--header-height, 70px);
+    z-index: 50;
+
+    /* Scroll horizontal táctil (mobile-first) */
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+
+    /* Ocultar barra de scroll visual */
+    scrollbar-width: none;
+  }
+  .disc-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* ---- Botón de disciplina ---- */
+  .disc-nav__btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+    flex-shrink: 0;
+    min-width: 76px;
+    padding: var(--space-2) var(--space-2);
+    background: transparent;
+    border: 2px solid transparent;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    opacity: 0.5;
+    transition:
+      opacity var(--transition-base),
+      transform var(--transition-base),
+      border-color var(--transition-base),
+      background var(--transition-base);
+    scroll-snap-align: center;
+  }
+  .disc-nav__btn:hover {
+    opacity: 0.8;
+    background: rgba(255, 255, 255, 0.04);
+  }
+  .disc-nav__btn.active {
+    opacity: 1;
+    transform: scale(1.05);
+    border-color: var(--color-primary-dark);
+    background: rgba(196, 30, 58, 0.1);
+  }
+
+  /* ---- Avatar circular ---- */
+  .disc-nav__avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-full);
+    object-fit: cover;
+    border: 2px solid transparent;
+    transition:
+      border-color var(--transition-base),
+      box-shadow var(--transition-base);
+  }
+  .disc-nav__btn.active .disc-nav__avatar {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 12px rgba(196, 30, 58, 0.45);
+  }
+
+  /* ---- Label ---- */
+  .disc-nav__label {
+    font-family: var(--font-family);
+    font-size: 0.68rem;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    transition: color var(--transition-fast);
+    text-align: center;
+    max-width: 76px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .disc-nav__btn.active .disc-nav__label {
+    color: var(--color-text);
+  }
+
+  /* ===========================================
+     CONTENIDO PRINCIPAL
+     =========================================== */
+  .disciplines-page .content {
     flex: 1;
-    padding: 1.5rem;
+    padding: var(--space-6);
     max-width: 900px;
     margin: 0 auto;
     width: 100%;
-    position: relative;
-    min-height: calc(100vh - var(--header-height) - 280px);
   }
 
-  /* Cards de contenido - solo una visible */
-  .disc-content-card {
+  /* ---- Panel de disciplina (solo uno visible) ---- */
+  .disciplines-page .disc-panel {
     display: none;
     opacity: 0;
-    transition: opacity 0.4s ease;
   }
-
-  .disc-content-card--active {
+  .disciplines-page .disc-panel--active {
     display: block;
     opacity: 1;
-    animation: fadeIn 0.4s ease;
+  }
+  /* Animación solo aplicada via JS (no en carga inicial) */
+  .disciplines-page .disc-panel--animate {
+    animation: discFadeIn 0.4s ease forwards;
   }
 
-  @keyframes fadeIn {
+  @keyframes discFadeIn {
     from {
       opacity: 0;
-      transform: translateY(10px);
+      transform: translateY(12px);
     }
     to {
       opacity: 1;
@@ -278,52 +372,60 @@ function getClasesForDisciplina(disciplinaId: string) {
     }
   }
 
-  .disc-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    padding: 1.5rem;
-    background: var(--color-bg-card);
-    border-radius: var(--radius-lg);
-    border-left: 4px solid var(--accent);
-    margin-bottom: 1.5rem;
+  /* ---- Título Hero-style ---- */
+  .disc-title {
+    font-family: "Black Ops One", var(--font-family-heading);
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.1;
+    color: var(--accent, var(--color-text));
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
+    margin-bottom: var(--space-6);
   }
 
-  .disc-header__title {
-    font-size: 1.75rem;
-    margin-bottom: 0.25rem;
-    color: var(--accent);
-  }
-  .disc-header__desc {
-    font-size: 0.9rem;
+  /* ---- Descripción standalone ---- */
+  .disc-desc {
+    font-size: var(--font-size-base);
     color: var(--color-text-muted);
-    line-height: 1.5;
-    max-width: 100%;
+    line-height: var(--line-height-relaxed);
+    max-width: 55ch;
+    margin-bottom: var(--space-6);
   }
 
-  /* === Schedule Section === */
+  /* ---- Grid cuerpo: info + horario ---- */
+  .disc-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  /* ===========================================
+     HORARIO (SCHEDULE)
+     =========================================== */
   .schedule-section {
-    margin-bottom: 1.5rem;
-    padding: 1.25rem;
+    padding: var(--space-5);
     background: var(--color-bg-card);
     border-radius: var(--radius-lg);
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
   .schedule-section h3 {
-    font-size: 1rem;
-    margin-bottom: 1rem;
+    font-size: var(--font-size-base);
+    margin-bottom: var(--space-4);
     color: var(--color-text);
   }
   .schedule-section--empty p {
     color: var(--color-text-muted);
-    font-size: 0.9rem;
+    font-size: var(--font-size-sm);
   }
   .schedule-section--empty a {
     color: var(--color-primary);
   }
+
   .schedule-table-wrapper {
     overflow-x: auto;
-    margin-bottom: 0.75rem;
+    margin-bottom: var(--space-3);
   }
   .schedule-table {
     width: 100%;
@@ -332,7 +434,7 @@ function getClasesForDisciplina(disciplinaId: string) {
   }
   .schedule-table th,
   .schedule-table td {
-    padding: 0.5rem;
+    padding: var(--space-2);
     text-align: center;
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
@@ -391,177 +493,161 @@ function getClasesForDisciplina(disciplinaId: string) {
     text-decoration: underline;
   }
 
-  /* === Carrusel de Disciplinas (3D + fixed/sticky) === */
-  .disc-carousel {
-    position: sticky;
-    top: var(--header-height, 60px);
-    width: 100%;
-    height: 280px;
-    margin-top: auto;
-    background: transparent;
-    overflow: hidden;
-    perspective: 1400px;
-    perspective-origin: 50% 50%;
-    z-index: 50;
-  }
-
-  .disc-carousel__track {
-    display: flex;
-    height: 100%;
-    cursor: grab;
-    user-select: none;
-    -webkit-user-select: none;
-    transform-style: preserve-3d;
-    align-items: center;
-  }
-
-  .disc-carousel__track--dynamic .disc-carousel-card {
-    transition: none;
-  }
-
-  /* Tarjetas del carrusel con efecto 3D */
-  .disc-carousel-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    flex-shrink: 0;
-    height: 100%;
-    background: linear-gradient(135deg, #1a1a2e 0%, #0f0f0f 100%);
-    background-size: cover;
-    background-position: center;
-    border: 2px solid rgba(255, 255, 255, 0.08);
-    text-decoration: none;
-    position: relative;
-    overflow: hidden;
-    transform-style: preserve-3d;
-    backface-visibility: hidden;
-    transition:
-      transform 0.5s cubic-bezier(0.33, 1, 0.68, 1),
-      border-color 0.3s ease,
-      opacity 0.3s ease;
-    cursor: pointer;
-    border: none;
-    padding: 0;
-  }
-
-  .disc-carousel-card[data-position="left"] {
-    transform: rotateY(24deg) translateZ(-50px) scale(0.78);
-  }
-
-  .disc-carousel-card[data-position="center"] {
-    transform: rotateY(0) translateZ(50px) scale(1.08);
-  }
-
-  .disc-carousel-card[data-position="right"] {
-    transform: rotateY(-24deg) translateZ(-50px) scale(0.78);
-  }
-
-  /* Dark overlay for readability on image cards */
-  .disc-carousel-card::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0.3) 0%,
-      rgba(0, 0, 0, 0.7) 100%
-    );
-    z-index: 1;
-  }
-
-  .disc-carousel-card__name {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--color-text);
-    text-align: center;
-    z-index: 2;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
-    padding: 0 0.75rem;
-    line-height: 1.3;
-  }
-
-  /* Tarjeta activa */
-  .disc-carousel-card--active {
-    border-color: var(--card-color);
-  }
-  .disc-carousel-card--active .disc-carousel-card__name {
-    color: var(--card-color);
-  }
-  .disc-carousel-card--active::after {
-    background: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0.15) 0%,
-      rgba(0, 0, 0, 0.45) 100%
-    );
-  }
-
-  /* === Desktop: Todo en una pantalla === */
-  @media (min-width: 769px) {
-    .disciplines-page {
-      height: calc(100vh - var(--header-height));
-      overflow: hidden;
+  /* ===========================================
+     DESKTOP (≥ 768px)
+     =========================================== */
+  @media (min-width: 768px) {
+    .disc-nav {
+      justify-content: center;
+      overflow-x: visible;
+      gap: var(--space-4);
+      padding: var(--space-5) var(--space-6);
     }
 
-    .content {
-      flex: 1;
-      overflow-y: auto;
-      min-height: 0;
-      padding: 1rem 1.5rem;
+    .disc-nav__btn {
+      min-width: 90px;
+      padding: var(--space-3);
     }
 
-    .disc-carousel {
-      flex-shrink: 0;
-      height: 280px;
+    .disc-nav__avatar {
+      width: 72px;
+      height: 72px;
+    }
+
+    .disc-nav__label {
+      font-size: var(--font-size-xs);
+      max-width: 90px;
+    }
+
+    .disciplines-page .content {
+      padding: var(--space-8) var(--space-6);
+      max-width: 1100px;
+    }
+
+    .disc-title {
+      font-size: var(--font-size-5xl);
+    }
+
+    /* Grid: info izquierda, horario derecha */
+    .disc-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-8);
+      align-items: start;
+    }
+
+    .disc-desc {
+      margin-bottom: 0;
     }
   }
 
-  /* === Mobile (< 768px) === */
-  @media (max-width: 768px) {
-    .disciplines-page {
-      min-height: 100vh;
-      padding-bottom: 33vh;
+  /* ===========================================
+     LARGE DESKTOP (≥ 1024px)
+     =========================================== */
+  @media (min-width: 1024px) {
+    .disc-nav__avatar {
+      width: 80px;
+      height: 80px;
     }
 
-    .content {
-      padding: 1rem;
-      min-height: auto;
+    .disc-nav__btn {
+      min-width: 100px;
     }
 
-    .disc-header {
-      flex-direction: column;
+    .disc-nav__label {
+      font-size: var(--font-size-sm);
+      max-width: 100px;
+    }
+
+    .disciplines-page .content {
+      max-width: 1200px;
+    }
+  }
+
+  /* ===========================================
+     MOBILE (< 768px)
+     =========================================== */
+  @media (max-width: 767px) {
+    .disciplines-page .content {
+      padding: var(--space-4);
+    }
+
+    .disc-title {
+      font-size: var(--font-size-3xl);
       text-align: center;
-      padding: 1rem;
     }
 
-    .disc-header__title {
-      font-size: 1.5rem;
-    }
-
-    .disc-carousel {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 33vh;
-      z-index: 100;
-      background: transparent;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      top: auto;
-    }
-
-    /* En móvil, el carrusel se vuelve sticky cuando llega al footer */
-    .disc-carousel.sticky-top {
-      position: sticky;
-      top: var(--header-height, 60px);
-      bottom: auto;
-    }
-
-    .disc-carousel-card__name {
-      font-size: 0.75rem;
+    .disc-desc {
+      text-align: center;
+      max-width: 100%;
     }
   }
 </style>
 
-<script is:inline src="/scripts/discipline-carousel.js"></script>
+<script is:inline>
+  /**
+   * Interactividad del carrusel de disciplinas.
+   * Vanilla JS — sin dependencias, sin recarga de página.
+   */
+  document.addEventListener("DOMContentLoaded", function () {
+    var nav = document.getElementById("disc-nav");
+    var buttons = document.querySelectorAll(".disc-nav__btn");
+    var panels = document.querySelectorAll(".disc-panel");
+
+    if (!nav || buttons.length === 0 || panels.length === 0) return;
+
+    buttons.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var targetId = btn.dataset.disciplineId;
+        if (!targetId) return;
+
+        // — Actualizar botones activos —
+        buttons.forEach(function (b) {
+          b.classList.remove("active");
+          b.setAttribute("aria-pressed", "false");
+        });
+        btn.classList.add("active");
+        btn.setAttribute("aria-pressed", "true");
+
+        // — Scroll para centrar el botón en la vista —
+        btn.scrollIntoView({
+          behavior: "smooth",
+          inline: "center",
+          block: "nearest",
+        });
+
+        // — Cambiar panel visible —
+        panels.forEach(function (panel) {
+          panel.classList.remove("disc-panel--active");
+          panel.classList.remove("disc-panel--animate");
+        });
+
+        var targetPanel = document.querySelector(
+          '.disc-panel[data-discipline-id="' + targetId + '"]'
+        );
+        if (targetPanel) {
+          // Forzar re-render de la animación CSS
+          void targetPanel.offsetWidth;
+          targetPanel.classList.add("disc-panel--active");
+          targetPanel.classList.add("disc-panel--animate");
+        }
+
+        // — Actualizar URL sin recargar la página —
+        history.replaceState(null, "", "/disciplinas/" + targetId);
+      });
+    });
+
+    // — Scroll inicial para centrar el botón activo —
+    var activeBtn = nav.querySelector(".disc-nav__btn.active");
+    if (activeBtn) {
+      // Usar setTimeout para que el DOM esté completamente renderizado
+      setTimeout(function () {
+        activeBtn.scrollIntoView({
+          behavior: "instant",
+          inline: "center",
+          block: "nearest",
+        });
+      }, 50);
+    }
+  });
+</script>

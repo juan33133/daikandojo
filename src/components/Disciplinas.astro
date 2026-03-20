@@ -1,0 +1,424 @@
+---
+/**
+ * Disciplinas.astro
+ * Componente interactivo con carrusel horizontal de disciplinas
+ * y área de contenido con transición fade-in. Sin recarga de página.
+ */
+
+const disciplinas = [
+  {
+    id: "karate",
+    nombre: "Karate",
+    imagenUrl: "/images/disciplinas/karate.jpeg",
+    descripcion: `
+      <p>El <strong>Karate</strong> es un arte marcial japonés que se centra en golpes de puño, patadas, rodillazos y técnicas a mano abierta. En Daikan Dojo enseñamos un enfoque integral que combina <em>kata</em>, <em>kumite</em> y preparación física.</p>
+      <ul>
+        <li>Desarrollo de disciplina, respeto y autocontrol</li>
+        <li>Clases para niños, jóvenes y adultos</li>
+        <li>Preparación para competiciones y exámenes de grado</li>
+      </ul>
+    `,
+  },
+  {
+    id: "krav-maga",
+    nombre: "Krav Maga",
+    imagenUrl: "/images/disciplinas/kravmaga.png",
+    descripcion: `
+      <p><strong>Krav Maga</strong> es el sistema de defensa personal y combate desarrollado para las Fuerzas de Defensa de Israel. Prioriza respuestas instintivas, eficientes y directas ante amenazas reales.</p>
+      <ul>
+        <li>Técnicas de defensa contra agarres, estrangulamientos y armas</li>
+        <li>Entrenamiento de situaciones de estrés realistas</li>
+        <li>Apto para todas las edades y niveles de condición física</li>
+      </ul>
+    `,
+  },
+  {
+    id: "muay-thai",
+    nombre: "Muay Thai",
+    imagenUrl: "/images/disciplinas/muay-thai.jpeg",
+    descripcion: `
+      <p>El <strong>Muay Thai</strong>, conocido como "el arte de los ocho miembros", es el deporte nacional de Tailandia. Utiliza puños, codos, rodillas y espinillas como puntos de contacto.</p>
+      <ul>
+        <li>Cardio de alta intensidad y acondicionamiento funcional</li>
+        <li>Técnicas de clinch, barridos y combinaciones</li>
+        <li>Sparring progresivo adaptado a cada nivel</li>
+      </ul>
+    `,
+  },
+  {
+    id: "hapkido",
+    nombre: "Hapkido",
+    imagenUrl: "/images/disciplinas/hapkido.jpeg",
+    descripcion: `
+      <p>El <strong>Hapkido</strong> es un arte marcial coreano basado en la redirección de la fuerza del oponente. Combina proyecciones, luxaciones articulares, patadas y golpes con un enfoque en la fluidez del movimiento.</p>
+      <ul>
+        <li>Técnicas de control articular y proyecciones</li>
+        <li>Defensa personal eficaz para situaciones reales</li>
+        <li>Trabajo de flexibilidad, equilibrio y coordinación</li>
+      </ul>
+    `,
+  },
+];
+---
+
+<section class="disciplinas section" id="disciplinas">
+  <div class="container">
+    <!-- Encabezado de sección -->
+    <div class="section-header section-header--center">
+      <span class="section-header__subtitle">Entrena con nosotros</span>
+      <h2 class="section-header__title">Nuestras Disciplinas</h2>
+      <div class="divider divider--center"></div>
+    </div>
+
+    <!-- Carrusel de navegación -->
+    <nav class="disciplinas__nav" aria-label="Selector de disciplinas">
+      {disciplinas.map((d, i) => (
+        <button
+          class={`disciplinas__btn ${i === 0 ? "active" : ""}`}
+          data-target={d.id}
+          type="button"
+          aria-pressed={i === 0 ? "true" : "false"}
+        >
+          <img
+            class="disciplinas__avatar"
+            src={d.imagenUrl}
+            alt={`Icono de ${d.nombre}`}
+            loading="lazy"
+            width="72"
+            height="72"
+          />
+          <span class="disciplinas__label">{d.nombre}</span>
+        </button>
+      ))}
+    </nav>
+
+    <!-- Área de contenido -->
+    <div class="disciplinas__content">
+      {disciplinas.map((d, i) => (
+        <article
+          class={`disciplinas__panel ${i === 0 ? "active" : ""}`}
+          id={`panel-${d.id}`}
+          role="tabpanel"
+        >
+          <div class="disciplinas__panel-inner">
+            <div class="disciplinas__panel-image">
+              <img
+                src={d.imagenUrl}
+                alt={d.nombre}
+                loading="lazy"
+                width="600"
+                height="400"
+              />
+            </div>
+            <div class="disciplinas__panel-text">
+              <h3>{d.nombre}</h3>
+              <Fragment set:html={d.descripcion} />
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ========================================
+     CARRUSEL DE NAVEGACIÓN
+     ======================================== */
+  .disciplinas__nav {
+    display: flex;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-2);
+    margin-bottom: var(--space-8);
+
+    /* Scroll horizontal táctil en móvil */
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+
+    /* Ocultar scrollbar visual */
+    scrollbar-width: none; /* Firefox */
+  }
+  .disciplinas__nav::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+
+  /* ---- Botón de disciplina ---- */
+  .disciplinas__btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    flex-shrink: 0;
+    min-width: 90px;
+    padding: var(--space-3);
+    background: transparent;
+    border: 2px solid transparent;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    opacity: 0.5;
+    transition:
+      opacity var(--transition-base),
+      transform var(--transition-base),
+      border-color var(--transition-base),
+      background var(--transition-base);
+    scroll-snap-align: center;
+  }
+
+  .disciplinas__btn:hover {
+    opacity: 0.8;
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .disciplinas__btn.active {
+    opacity: 1;
+    transform: scale(1.08);
+    border-color: var(--color-primary-dark);
+    background: rgba(196, 30, 58, 0.08);
+  }
+
+  /* ---- Avatar circular ---- */
+  .disciplinas__avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: var(--radius-full);
+    object-fit: cover;
+    border: 3px solid transparent;
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .disciplinas__btn.active .disciplinas__avatar {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 16px rgba(196, 30, 58, 0.45);
+  }
+
+  /* ---- Label ---- */
+  .disciplinas__label {
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    transition: color var(--transition-fast);
+  }
+
+  .disciplinas__btn.active .disciplinas__label {
+    color: var(--color-text);
+  }
+
+  /* ========================================
+     ÁREA DE CONTENIDO
+     ======================================== */
+  .disciplinas__content {
+    position: relative;
+    min-height: 320px;
+  }
+
+  /* ---- Panel individual ---- */
+  .disciplinas__panel {
+    display: none;
+    opacity: 0;
+    animation: disciplinaFadeIn 0.45s ease forwards;
+  }
+
+  .disciplinas__panel.active {
+    display: block;
+  }
+
+  @keyframes disciplinaFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ---- Layout interior del panel ---- */
+  .disciplinas__panel-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+    background: var(--color-bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+  }
+
+  .disciplinas__panel-image img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .disciplinas__panel-text {
+    padding: 0 var(--space-6) var(--space-8);
+  }
+
+  .disciplinas__panel-text h3 {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--space-4);
+    color: var(--color-text);
+    position: relative;
+    padding-bottom: var(--space-3);
+  }
+
+  .disciplinas__panel-text h3::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: var(--gradient-accent);
+    border-radius: var(--radius-full);
+  }
+
+  .disciplinas__panel-text :global(p) {
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  .disciplinas__panel-text :global(strong) {
+    color: var(--color-text);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .disciplinas__panel-text :global(em) {
+    color: var(--color-accent);
+    font-style: italic;
+  }
+
+  .disciplinas__panel-text :global(ul) {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .disciplinas__panel-text :global(li) {
+    position: relative;
+    padding-left: var(--space-6);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-normal);
+  }
+
+  .disciplinas__panel-text :global(li)::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    color: var(--color-primary);
+    font-weight: var(--font-weight-bold);
+  }
+
+  /* ========================================
+     DESKTOP (≥ 768px)
+     ======================================== */
+  @media (min-width: 768px) {
+    .disciplinas__nav {
+      justify-content: center;
+      overflow-x: visible;
+      gap: var(--space-6);
+    }
+
+    .disciplinas__btn {
+      min-width: 110px;
+      padding: var(--space-4);
+    }
+
+    .disciplinas__avatar {
+      width: 88px;
+      height: 88px;
+    }
+
+    .disciplinas__label {
+      font-size: var(--font-size-base);
+    }
+
+    .disciplinas__panel-inner {
+      grid-template-columns: 2fr 3fr;
+    }
+
+    .disciplinas__panel-image img {
+      height: 100%;
+      min-height: 340px;
+    }
+
+    .disciplinas__panel-text {
+      padding: var(--space-8) var(--space-8) var(--space-8) 0;
+    }
+
+    .disciplinas__panel-text h3 {
+      font-size: var(--font-size-3xl);
+    }
+  }
+
+  /* ========================================
+     LARGE DESKTOP (≥ 1024px)
+     ======================================== */
+  @media (min-width: 1024px) {
+    .disciplinas__avatar {
+      width: 96px;
+      height: 96px;
+    }
+
+    .disciplinas__btn {
+      min-width: 130px;
+    }
+
+    .disciplinas__panel-text {
+      padding: var(--space-10) var(--space-10) var(--space-10) 0;
+    }
+  }
+</style>
+
+<script>
+  /**
+   * Interactividad del carrusel de disciplinas.
+   * Vanilla JS — sin dependencias.
+   */
+  document.addEventListener("DOMContentLoaded", () => {
+    const nav = document.querySelector<HTMLElement>(".disciplinas__nav");
+    const buttons = document.querySelectorAll<HTMLButtonElement>(".disciplinas__btn");
+    const panels = document.querySelectorAll<HTMLElement>(".disciplinas__panel");
+
+    if (!nav || buttons.length === 0 || panels.length === 0) return;
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const targetId = btn.dataset.target;
+        if (!targetId) return;
+
+        // — Actualizar botones activos —
+        buttons.forEach((b) => {
+          b.classList.remove("active");
+          b.setAttribute("aria-pressed", "false");
+        });
+        btn.classList.add("active");
+        btn.setAttribute("aria-pressed", "true");
+
+        // — Scroll para centrar el botón clicado —
+        btn.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+
+        // — Cambiar panel visible —
+        panels.forEach((panel) => {
+          panel.classList.remove("active");
+        });
+
+        const targetPanel = document.getElementById(`panel-${targetId}`);
+        if (targetPanel) {
+          // Forzar re-render de la animación
+          void targetPanel.offsetWidth;
+          targetPanel.classList.add("active");
+        }
+      });
+    });
+  });
+</script>
