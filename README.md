@@ -6,7 +6,7 @@
 ![Vitest](https://img.shields.io/badge/tests-Vitest-6E9F18?logo=vitest&logoColor=white)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Web en producción de **[Daikan Dojo](https://daikandojo.com)**, una asociación de artes marciales de Málaga con 12 disciplinas y clases para niños y adultos. La diseñé, la desarrollé y la mantengo para un cliente real.
+Web en producción de **[Daikan Dojo](https://daikandojo.es)**, una asociación de artes marciales de Málaga con 12 disciplinas y clases para niños y adultos. La diseñé, la desarrollé y la mantengo para un cliente real.
 
 | Inicio | Página de disciplina |
 |---|---|

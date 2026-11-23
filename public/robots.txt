@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://daikandojo.com/sitemap-index.xml
+Sitemap: https://daikandojo.es/sitemap-index.xml

@@ -8,7 +8,10 @@ import { parse } from "node-html-parser";
 import { describe, expect, it } from "vitest";
 
 const DIST = "dist";
-const SITE = "https://daikandojo.com";
+// Dominio único de verdad: el `site` de astro.config.mjs (sin barra final)
+const SITE = readFileSync("astro.config.mjs", "utf8")
+  .match(/site:\s*['"]([^'"]+)['"]/)![1]
+  .replace(/\/$/, "");
 
 if (!existsSync(DIST)) throw new Error("No existe dist/: ejecuta `npm run build` antes.");
 
@@ -70,6 +73,14 @@ describe.each(indexables)("$route", ({ route, doc }) => {
   it("los JSON-LD son JSON válido", () => {
     for (const s of doc.querySelectorAll('script[type="application/ld+json"]')) {
       expect(() => JSON.parse(s.text)).not.toThrow();
+    }
+  });
+});
+
+describe("dominio", () => {
+  it("ninguna página referencia un dominio distinto del oficial", () => {
+    for (const p of pages) {
+      expect(p.doc.toString(), p.route).not.toMatch(/https?:\/\/(www\.)?daikandojo\.(?!es\b)/);
     }
   });
 });
