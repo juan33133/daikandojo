@@ -8,10 +8,19 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "check": "astro build && vitest run"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.3.1",
     "astro": "^6.0.2"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^5.1.1",
+    "node-html-parser": "^9.0.7",
+    "vitest": "^5.1.1"
   }
 }

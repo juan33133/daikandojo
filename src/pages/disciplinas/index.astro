@@ -1,11 +1,26 @@
 ---
 import disciplinas from "../../data/disciplinas.json";
 
-// Obtener la primera disciplina activa para la redirección
+// /disciplinas/ no tiene contenido propio: redirige a la primera disciplina activa.
+// Se marca noindex y se excluye del sitemap (astro.config.mjs) para no generar
+// contenido duplicado en buscadores.
 const firstDiscipline = disciplinas.find((d) => d.activo !== false);
-const redirectUrl = firstDiscipline
-    ? `/disciplinas/${firstDiscipline.id}`
-    : "/";
+const redirectUrl = new URL(
+  firstDiscipline ? `/disciplinas/${firstDiscipline.id}/` : "/",
+  Astro.site,
+).href;
 ---
 
-<meta http-equiv="refresh" content={`0;url=${redirectUrl}`} />
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Disciplinas | Daikan Dojo</title>
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href={redirectUrl} />
+    <meta http-equiv="refresh" content={`0;url=${redirectUrl}`} />
+  </head>
+  <body>
+    <a href={redirectUrl}>Ver disciplinas</a>
+  </body>
+</html>
