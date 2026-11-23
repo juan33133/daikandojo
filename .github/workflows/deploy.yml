@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: production
-      url: https://daikandojo.com
+      url: https://daikandojo.es
     steps:
       - name: 📥 Descargar build verificado
         uses: actions/download-artifact@v8
