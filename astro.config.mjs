@@ -18,12 +18,6 @@ export default defineConfig({
   vite: {
     build: {
       cssMinify: true
-    },
-    server: {
-      allowedHosts: [
-        'ventures-promises-club-bernard.trycloudflare.com',
-        'famous-howto-field-childhood.trycloudflare.com'
-      ]
     }
   }
 });
