@@ -23,13 +23,13 @@ jobs:
       url: https://daikandojo.com
     steps:
       - name: 📥 Descargar build verificado
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: dist
           path: dist
 
       - name: 🚀 Subir a Carpeta de Dominio
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
