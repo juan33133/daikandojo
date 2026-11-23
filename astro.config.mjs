@@ -6,19 +6,18 @@ export default defineConfig({
   output: 'static',
   site: 'https://daikandojo.com',
   compressHTML: true,
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      // Páginas que solo redirigen no deben indexarse
+      filter: (page) => !page.endsWith('/disciplinas/'),
+    }),
+  ],
   build: {
     inlineStylesheets: 'auto'
   },
   vite: {
     build: {
       cssMinify: true
-    },
-    server: {
-      allowedHosts: [
-        'ventures-promises-club-bernard.trycloudflare.com',
-        'famous-howto-field-childhood.trycloudflare.com'
-      ]
     }
   }
 });

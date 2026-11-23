@@ -4,6 +4,8 @@ import Header from "../../components/Header.astro";
 
 import disciplinas from "../../data/disciplinas.json";
 import horarios from "../../data/horarios.json";
+import { metaDescription } from "../../lib/seo";
+import { getClasesForDisciplina, type HorarioSemanal } from "../../lib/horarios";
 
 export function getStaticPaths() {
   return disciplinas
@@ -15,95 +17,34 @@ const { id } = Astro.params;
 const current = disciplinas.find((d) => d.id === id)!;
 const activeDisciplinas = disciplinas.filter((d) => d.activo !== false);
 
-// Mapeo de ID de disciplina a nombres de actividad en el horario
-const disciplinaToActividades: Record<string, string[]> = {
-  "aikido-tomiki": ["Aikido"],
-  boxeo: ["Boxeo", "Kick Boxing / Boxeo"],
-  "brazilian-jiu-jitsu": ["BJJ (Jiu Jitsu)", "Jiu Jitsu"],
-  bujinkan: ["Budo Taijutsu"],
-  hapkido: ["Hapkido"],
-  "ju-jutsu": ["Jiu Jitsu"],
-  "karate-do": ["Karate"],
-  kenjutsu: ["Kenjutsu"],
-  "kick-boxing-k1": ["Kick Boxing", "Kick Boxing / Boxeo"],
-  "krav-maga": ["Krav Maga"],
-  lucha: ["Lucha"],
-  "muay-thai": ["Muay Thai"],
-  "tang-soo-do": ["Tang Soo Do"],
+const horario = horarios.horario_semanal as HorarioSemanal;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Course",
+      name: `${current.nombre} en Daikan Dojo`,
+      description: current.descripcion || `Clases de ${current.nombre} en Málaga.`,
+      provider: { "@type": "SportsActivityLocation", name: "Daikan Dojo", sameAs: Astro.site?.href },
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Inicio", item: new URL("/", Astro.site).href },
+        { "@type": "ListItem", position: 2, name: current.nombre, item: new URL(`/disciplinas/${current.id}/`, Astro.site).href },
+      ],
+    },
+  ],
 };
-
-// Función para obtener clases de una disciplina
-function getClasesForDisciplina(disciplinaId: string) {
-  const actividadesBuscadas = disciplinaToActividades[disciplinaId] || [];
-  type Clase = {
-    inicio: string;
-    fin: string;
-    actividad: string;
-    grupo: string;
-  };
-  type ClaseFiltrada = Clase & { dia: string; nombreMostrar: string };
-
-  const diasSemana = [
-    "lunes",
-    "martes",
-    "miercoles",
-    "jueves",
-    "viernes",
-  ] as const;
-  const diasNombres: Record<string, string> = {
-    lunes: "Lun",
-    martes: "Mar",
-    miercoles: "Mié",
-    jueves: "Jue",
-    viernes: "Vie",
-  };
-
-  const clasesFiltradas: ClaseFiltrada[] = [];
-  const disciplina = disciplinas.find((d) => d.id === disciplinaId);
-
-  diasSemana.forEach((dia) => {
-    const clasesDelDia =
-      (horarios.horario_semanal as Record<string, Clase[]>)[dia] || [];
-    clasesDelDia.forEach((clase) => {
-      const coincide = actividadesBuscadas.some(
-        (act) => clase.actividad === act || clase.actividad.includes(act),
-      );
-      if (coincide && disciplina) {
-        clasesFiltradas.push({
-          ...clase,
-          dia,
-          nombreMostrar: disciplina.nombre,
-        });
-      }
-    });
-  });
-
-  const clasesPorDiaYHora: Record<string, ClaseFiltrada[]> = {};
-  clasesFiltradas.forEach((clase) => {
-    const key = `${clase.dia}-${clase.inicio}`;
-    if (!clasesPorDiaYHora[key]) clasesPorDiaYHora[key] = [];
-    clasesPorDiaYHora[key].push(clase);
-  });
-
-  const franjasUnicas = [
-    ...new Set(clasesFiltradas.map((c) => c.inicio)),
-  ].sort();
-
-  return {
-    tieneClases: clasesFiltradas.length > 0,
-    clasesPorDiaYHora,
-    franjasUnicas,
-    diasSemana,
-    diasNombres,
-  };
-}
 ---
 
 <BaseLayout
   title={`${current.nombre} - Clases en Málaga`}
-  description={current.descripcion || `Clases de ${current.nombre} en Daikan Dojo, Málaga. Consulta horarios y únete a nuestra escuela de artes marciales.`}
+  description={metaDescription(current.descripcion || `Clases de ${current.nombre} en Daikan Dojo, Málaga. Consulta horarios y únete a nuestra escuela de artes marciales.`)}
 >
   <Header slot="header" currentPath="/disciplinas" />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)} />
 
   <div class="disciplines-page">
     <!-- ========== CARRUSEL SUPERIOR (Avatares) ========== -->
@@ -134,10 +75,11 @@ function getClasesForDisciplina(disciplinaId: string) {
     </nav>
 
     <!-- ========== CONTENIDO PRINCIPAL ========== -->
-    <main class="content">
+    <div class="content">
       {
         activeDisciplinas.map((disc) => {
-          const clasesData = getClasesForDisciplina(disc.id);
+          const clasesData = getClasesForDisciplina(disc.id, disc.nombre, horario);
+          const Titulo = disc.id === id ? "h1" : "h2";
           const isActive = disc.id === id;
 
           return (
@@ -149,7 +91,7 @@ function getClasesForDisciplina(disciplinaId: string) {
               data-discipline-id={disc.id}
               style={`--accent: ${disc.color}`}
             >
-              <h1 class="disc-title">{disc.nombre}</h1>
+              <Titulo class="disc-title">{disc.nombre}</Titulo>
 
               <div class="disc-body">
                 <div class="disc-info">
@@ -242,7 +184,7 @@ function getClasesForDisciplina(disciplinaId: string) {
           );
         })
       }
-    </main>
+    </div>
   </div>
 </BaseLayout>
 

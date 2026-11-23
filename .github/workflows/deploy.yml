@@ -1,29 +1,35 @@
 name: Despliegue Astro Daikan Dojo
+
 on:
   push:
     branches:
       - main
 
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
 jobs:
-  build-and-deploy:
+  ci:
+    name: CI
+    uses: ./.github/workflows/ci.yml
+
+  deploy:
+    name: Desplegar por FTP
+    needs: ci # solo se publica si build y tests pasan
     runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://daikandojo.com
     steps:
-      - name: 🚚 Obtener código
-        uses: actions/checkout@v4
-
-      - name: ⚙️ Configurar Node.js
-        uses: actions/setup-node@v4
+      - name: 📥 Descargar build verificado
+        uses: actions/download-artifact@v8
         with:
-          node-version: 22
-
-      - name: 📦 Instalar y Construir
-        run: |
-          npm ci
-          npm install
-          npx astro build
+          name: dist
+          path: dist
 
       - name: 🚀 Subir a Carpeta de Dominio
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
@@ -31,4 +37,4 @@ jobs:
           local-dir: ./dist/
           server-dir: /public_html/
           protocol: ftp
-          port: 21 
+          port: 21
