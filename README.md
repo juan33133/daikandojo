@@ -3,7 +3,8 @@
 [![Deploy](https://github.com/juan33133/daikandojo/actions/workflows/deploy.yml/badge.svg)](https://github.com/juan33133/daikandojo/actions/workflows/deploy.yml)
 ![Astro](https://img.shields.io/badge/Astro-6-BC52EE?logo=astro&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
-![Vitest](https://img.shields.io/badge/tests-Vitest-6E9F18?logo=vitest&logoColor=white)
+![Vitest](https://img.shields.io/badge/tests-217%20passing-6E9F18?logo=vitest&logoColor=white)
+![Coverage](https://img.shields.io/badge/cobertura%20src%2Flib-100%25-brightgreen)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 Web en producción de **[Daikan Dojo](https://daikandojo.es)**, una asociación de artes marciales de Málaga con 12 disciplinas y clases para niños y adultos. La diseñé, la desarrollé y la mantengo para un cliente real.
@@ -33,6 +34,8 @@ El dojo necesitaba una web rápida, fácil de encontrar en Google y que **una pe
 ## Calidad y testing
 
 Los tests se ejecutan en cada push y cada pull request. **El despliegue a producción solo ocurre si todos pasan.**
+
+**217 tests** en 4 ficheros, que se ejecutan en menos de un segundo, con **100 % de líneas y funciones cubiertas** en la lógica de `src/lib/`.
 
 ```
 tests/
